@@ -202,6 +202,103 @@ importers:
         specifier: workspace:*
         version: link:../../tooling/typescript-config
 
+  apps/digital:
+    dependencies:
+      '@hookform/resolvers':
+        specifier: 5.1.0
+        version: 5.1.0(react-hook-form@7.57.0(react@19.0.0))
+      '@t3-oss/env-nextjs':
+        specifier: 0.13.6
+        version: 0.13.6(typescript@5.8.3)(zod@3.25.56)
+      '@tanstack/react-table':
+        specifier: 8.21.3
+        version: 8.21.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@workspace/analytics':
+        specifier: workspace:*
+        version: link:../../packages/analytics
+      '@workspace/billing':
+        specifier: workspace:*
+        version: link:../../packages/billing
+      '@workspace/common':
+        specifier: workspace:*
+        version: link:../../packages/common
+      '@workspace/routes':
+        specifier: workspace:*
+        version: link:../../packages/routes
+      '@workspace/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
+      date-fns:
+        specifier: 4.1.0
+        version: 4.1.0
+      exceljs:
+        specifier: 4.4.0
+        version: 4.4.0
+      lucide-react:
+        specifier: 0.513.0
+        version: 0.513.0(react@19.0.0)
+      motion:
+        specifier: 12.18.1
+        version: 12.18.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next:
+        specifier: 15.3.3
+        version: 15.3.3(@babel/core@7.27.4)(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next-secure-headers:
+        specifier: 2.2.0
+        version: 2.2.0
+      react:
+        specifier: 19.0.0
+        version: 19.0.0
+      react-dom:
+        specifier: 19.0.0
+        version: 19.0.0(react@19.0.0)
+      react-hook-form:
+        specifier: 7.57.0
+        version: 7.57.0(react@19.0.0)
+      react-is:
+        specifier: 19.0.0
+        version: 19.0.0
+      recharts:
+        specifier: 2.15.3
+        version: 2.15.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      server-only:
+        specifier: 0.0.1
+        version: 0.0.1
+      sharp:
+        specifier: 0.34.2
+        version: 0.34.2
+      vaul:
+        specifier: 1.1.2
+        version: 1.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      zod:
+        specifier: 3.25.56
+        version: 3.25.56
+    devDependencies:
+      '@next/bundle-analyzer':
+        specifier: 15.3.3
+        version: 15.3.3
+      '@types/node':
+        specifier: 22.15.30
+        version: 22.15.30
+      '@types/react':
+        specifier: 19.0.8
+        version: 19.0.8
+      '@types/react-dom':
+        specifier: 19.0.3
+        version: 19.0.3(@types/react@19.0.8)
+      '@workspace/eslint-config':
+        specifier: workspace:*
+        version: link:../../tooling/eslint-config
+      '@workspace/prettier-config':
+        specifier: workspace:*
+        version: link:../../tooling/prettier-config
+      '@workspace/typescript-config':
+        specifier: workspace:*
+        version: link:../../tooling/typescript-config
+      postcss:
+        specifier: 8.5.4
+        version: 8.5.4
+
   apps/marketing:
     dependencies:
       '@hookform/resolvers':

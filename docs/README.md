@@ -7,6 +7,7 @@
 ```bash
 pnpm --filter marketing run dev     # http://localhost:3001/ (Webpack)
 pnpm --filter dashboard run dev     # http://localhost:3000/ (Webpack)
+pnpm --filter digital run dev     # http://localhost:3003/ (Webpack)
 
 # Optional: Use Turbopack (experimental, faster but may have compatibility issues)
 pnpm --filter marketing run dev:turbo  # http://localhost:3001/ (Turbopack)
