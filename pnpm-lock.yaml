@@ -222,6 +222,9 @@ importers:
       '@workspace/common':
         specifier: workspace:*
         version: link:../../packages/common
+      '@workspace/database':
+        specifier: workspace:*
+        version: link:../../packages/database
       '@workspace/routes':
         specifier: workspace:*
         version: link:../../packages/routes
@@ -243,6 +246,9 @@ importers:
       next:
         specifier: 15.3.3
         version: 15.3.3(@babel/core@7.27.4)(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next-safe-action:
+        specifier: 8.0.2
+        version: 8.0.2(next@15.3.3(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       next-secure-headers:
         specifier: 2.2.0
         version: 2.2.0

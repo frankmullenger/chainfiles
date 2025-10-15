@@ -532,3 +532,41 @@ model WorkTimeSlot {
 
   @@index([workHoursId], map: "IX_WorkTimeSlot_workHoursId")
 }
+
+// ---- Digital Downloads Models ---- //
+
+model DigitalProduct {
+  id           String   @id(map: "PK_DigitalProduct") @default(uuid()) @db.Uuid
+  title        String   @db.VarChar(100)
+  description  String?  @db.VarChar(500)
+  filename     String   @db.VarChar(255) // Original filename
+  fileKey      String   @unique @db.VarChar(255) // Stored filename/path
+  fileSize     Int? // File size in bytes
+  mimeType     String?  @db.VarChar(100)
+  price        Int // Price in USDC cents (500 = $5.00)
+  sellerWallet String   @db.VarChar(42) // Base wallet address
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  downloadTokens DownloadToken[]
+
+  @@index([sellerWallet], map: "IX_DigitalProduct_sellerWallet")
+  @@index([createdAt], map: "IX_DigitalProduct_createdAt")
+}
+
+model DownloadToken {
+  id            String   @id(map: "PK_DownloadToken") @default(uuid()) @db.Uuid
+  token         String   @unique @db.VarChar(255)
+  productId     String   @db.Uuid
+  expiresAt     DateTime
+  downloadCount Int      @default(0)
+  maxDownloads  Int? // NULL = unlimited
+  createdAt     DateTime @default(now())
+
+  // Relations
+  product DigitalProduct @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId], map: "IX_DownloadToken_productId")
+  @@index([expiresAt], map: "IX_DownloadToken_expiresAt")
+}

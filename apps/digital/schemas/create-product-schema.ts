@@ -1,0 +1,36 @@
+import { z } from 'zod';
+
+export const createProductSchema = z.object({
+  title: z
+    .string({
+      required_error: 'Product title is required.',
+      invalid_type_error: 'Product title must be a string.'
+    })
+    .trim()
+    .min(1, 'Product title is required.')
+    .max(100, 'Maximum 100 characters allowed.'),
+
+  description: z
+    .string()
+    .trim()
+    .max(500, 'Maximum 500 characters allowed.')
+    .optional(),
+
+  price: z
+    .number({
+      required_error: 'Price is required.',
+      invalid_type_error: 'Price must be a number.'
+    })
+    .min(0.01, 'Price must be at least $0.01')
+    .max(10000, 'Price cannot exceed $10,000'),
+
+  sellerWallet: z
+    .string({
+      required_error: 'Seller wallet address is required.',
+      invalid_type_error: 'Seller wallet address must be a string.'
+    })
+    .trim()
+    .regex(/^0x[a-fA-F0-9]{40}$/, 'Invalid wallet address format')
+});
+
+export type CreateProductSchema = z.infer<typeof createProductSchema>;
