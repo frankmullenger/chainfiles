@@ -7,7 +7,7 @@
 ```bash
 pnpm --filter marketing run dev     # http://localhost:3001/ (Webpack)
 pnpm --filter dashboard run dev     # http://localhost:3000/ (Webpack)
-pnpm --filter digital run dev     # http://localhost:3003/ (Webpack)
+pnpm --filter digital run dev       # http://localhost:3005/ (Webpack)
 
 # Optional: Use Turbopack (experimental, faster but may have compatibility issues)
 pnpm --filter marketing run dev:turbo  # http://localhost:3001/ (Turbopack)
@@ -50,5 +50,9 @@ pnpm --filter @workspace/database run generate
 pnpm --filter @workspace/database exec -- prisma migrate reset
 # OR
 pnpm --filter @workspace/database exec prisma migrate reset
+
+# Open Prisma Studio (Database GUI)
+pnpm --filter @workspace/database run studio
+# Opens on http://localhost:3003 (no auto-browser, navigate manually)
 
 ```
