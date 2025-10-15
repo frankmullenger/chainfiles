@@ -16,12 +16,5 @@
     "*.mjs",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    ".cache",
-    ".next",
-    ".turbo",
-    "build",
-    "dist",
-    "node_modules"
-  ]
+  "exclude": [".cache", ".next", ".turbo", "build", "dist", "node_modules"]
 }
