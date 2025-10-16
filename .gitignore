@@ -40,6 +40,9 @@ yarn-error.log*
 # Ide
 .idea/
 
+# Backups
+.backups/
+
 # Digital app uploads - ignore files but keep directory structure
 apps/digital/uploads/products/*
 !apps/digital/uploads/products/.gitkeep
