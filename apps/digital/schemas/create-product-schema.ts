@@ -33,4 +33,38 @@ export const createProductSchema = z.object({
     .regex(/^0x[a-fA-F0-9]{40}$/, 'Invalid wallet address format')
 });
 
+// Schema for form validation (without file)
+export const createProductFormSchema = createProductSchema.extend({
+  file: z
+    .instanceof(File, {
+      message: 'Please select a file to upload.'
+    })
+    .refine((file) => file.size <= 50 * 1024 * 1024, {
+      message: 'File size must be less than 50MB.'
+    })
+    .refine(
+      (file) => {
+        const allowedExtensions = [
+          '.jpg',
+          '.jpeg',
+          '.png',
+          '.gif',
+          '.webp',
+          '.pdf',
+          '.txt',
+          '.doc',
+          '.docx',
+          '.zip'
+        ];
+        const fileName = file.name.toLowerCase();
+        return allowedExtensions.some((ext) => fileName.endsWith(ext));
+      },
+      {
+        message:
+          'File type not supported. Please upload PDF, image, TXT, DOC, DOCX, or ZIP files.'
+      }
+    )
+});
+
 export type CreateProductSchema = z.infer<typeof createProductSchema>;
+export type CreateProductFormSchema = z.infer<typeof createProductFormSchema>;

@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { useAction } from 'next-safe-action/hooks';
 
 import { Button } from '@workspace/ui/components/button';
 import {
@@ -24,14 +23,22 @@ import { Textarea } from '@workspace/ui/components/textarea';
 import { toast } from '@workspace/ui/components/sonner';
 
 import { useZodForm } from '../../../hooks/use-zod-form';
-import { createProductSchema, type CreateProductSchema } from '../../../schemas/create-product-schema';
-import { createProduct } from '../../../actions/create-product';
+import { createProductFormSchema, type CreateProductFormSchema } from '../../../schemas/create-product-schema';
+import { createProductWithFile } from '../../../actions/create-product-with-file';
+import { FileDropzone } from '../../../components/file-dropzone';
 
 export default function UploadPage(): React.JSX.Element {
-  const { execute, result, isExecuting } = useAction(createProduct);
+  const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+
+  // Debug logging for error state changes
+  React.useEffect(() => {
+    console.log('Error state changed:', error);
+  }, [error]);
 
   const methods = useZodForm({
-    schema: createProductSchema,
+    schema: createProductFormSchema,
     mode: 'onSubmit',
     defaultValues: {
       title: 'Premium Design Template Pack',
@@ -41,29 +48,68 @@ export default function UploadPage(): React.JSX.Element {
     }
   });
 
-  const onSubmit = async (values: CreateProductSchema) => {
-    try {
-      await execute(values);
+  // Update form value when file is selected
+  React.useEffect(() => {
+    if (selectedFile) {
+      methods.setValue('file', selectedFile, { shouldValidate: true });
+    }
+  }, [selectedFile, methods]);
 
-      if (result?.data?.success) {
-        toast.success(result.data.message);
-        methods.reset();
-      }
+  const onSubmit = async (values: CreateProductFormSchema) => {
+    console.log('=== FORM SUBMISSION START ===');
+    console.log('Form values:', values);
+    console.log('Selected file:', selectedFile);
+
+    if (!selectedFile) {
+      toast.error('Please select a file to upload');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      // Create FormData for file upload
+      const formData = new FormData();
+      formData.append('title', values.title);
+      formData.append('description', values.description || '');
+      formData.append('price', values.price.toString());
+      formData.append('sellerWallet', values.sellerWallet);
+      formData.append('file', selectedFile);
+
+      console.log('FormData created, calling server action...');
+
+      // Call server action with FormData
+      await createProductWithFile(formData);
+
+      // If we get here without redirect, something went wrong
+      console.log('Server action completed without redirect - this is unexpected');
+      toast.error('Unexpected error occurred');
+
     } catch (error) {
-      console.error('Upload error:', error);
-      toast.error('Failed to create product');
+      // Check if this is a Next.js redirect first (expected behavior, not an error)
+      if (error instanceof Error && error.message === 'NEXT_REDIRECT') {
+        // This is a successful redirect - don't log or handle as error
+        return;
+      }
+
+      // Only log and handle actual errors, not redirects
+      console.error('=== UPLOAD ERROR CAUGHT ===');
+      console.error('Error object:', error);
+      console.error('Error message:', error instanceof Error ? error.message : 'Unknown error');
+      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack');
+
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create product';
+      console.log('Setting error state to:', errorMessage);
+
+      setError(errorMessage);
+      toast.error(errorMessage);
+
+    } finally {
+      console.log('Setting isSubmitting to false');
+      setIsSubmitting(false);
     }
   };
-
-  // Show server errors
-  React.useEffect(() => {
-    if (result?.serverError) {
-      toast.error(result.serverError);
-    }
-    if (result?.validationErrors) {
-      toast.error('Please check your form inputs');
-    }
-  }, [result]);
 
   return (
     <div className="container max-w-2xl mx-auto py-12">
@@ -141,6 +187,25 @@ export default function UploadPage(): React.JSX.Element {
                 )}
               />
 
+              {/* File Upload */}
+              <FormField
+                control={methods.control}
+                name="file"
+                render={() => (
+                  <FormItem>
+                    <FormLabel>Digital Product File</FormLabel>
+                    <FormControl>
+                      <FileDropzone
+                        onFileSelect={setSelectedFile}
+                        selectedFile={selectedFile}
+                        disabled={isSubmitting}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
               {/* Seller Wallet field */}
               <FormField
                 control={methods.control}
@@ -163,9 +228,9 @@ export default function UploadPage(): React.JSX.Element {
                 <Button
                   type="submit"
                   className="w-full"
-                  disabled={isExecuting}
+                  disabled={isSubmitting}
                 >
-                  {isExecuting ? 'Creating Product...' : 'Create Product'}
+                  {isSubmitting ? 'Creating Product...' : 'Create Product'}
                 </Button>
               </CardFooter>
             </form>
@@ -173,12 +238,15 @@ export default function UploadPage(): React.JSX.Element {
         </CardContent>
       </Card>
 
-      {/* Show success message */}
-      {result?.data?.success && (
+      {/* Show error message */}
+      {error && (
         <div className="mt-4">
-          <div className="bg-green-50 border border-green-200 rounded-md p-4">
-            <p className="text-green-800">
-              ✅ Product created successfully! Product ID: {result.data.productId}
+          <div className="bg-red-50 border border-red-200 rounded-md p-4">
+            <p className="text-red-800 font-medium">
+              ❌ ERROR: {error}
+            </p>
+            <p className="text-red-600 text-sm mt-2">
+              Check browser console for detailed error information
             </p>
           </div>
         </div>
