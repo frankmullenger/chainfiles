@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { paymentMiddleware } from 'x402-next';
+import { prisma } from '@workspace/database/client';
 
 // Import x402 utilities for dynamic middleware (only used in /api/digital/download/*)
-// Using dynamic imports to avoid TypeScript resolution issues at build time
 let x402Utils: {
   exact: any;
   useFacilitator: any;
@@ -10,9 +10,10 @@ let x402Utils: {
 
 async function getX402Utils() {
   if (!x402Utils) {
-    // Import x402 utility functions for custom middleware
-    const { exact } = await import('x402/schemes');
-    const { useFacilitator } = await import('x402/verify');
+    const [{ exact }, { useFacilitator }] = await Promise.all([
+      import('x402/schemes'),
+      import('x402/verify')
+    ]);
     x402Utils = { exact, useFacilitator };
   }
   return x402Utils;
@@ -26,10 +27,10 @@ console.log(
 
 // ============================================================================
 // OPTION A: Static x402-next middleware (original working version)
-// Routes: /api/download/static/* - for testing with hardcoded price/wallet
+// Routes: /api/download/* - for testing with hardcoded price/wallet
 // ============================================================================
 const routeConfig = {
-  '/api/download/static/*': {
+  '/api/download/*': {
     price: '$0.01',
     network: 'base-sepolia' as const,
     config: {
@@ -56,55 +57,50 @@ const x402StaticMiddleware = paymentMiddleware(
   }
 );
 
-console.log('✅ Static middleware configured: /api/download/static/*');
+console.log('✅ Static middleware configured: /api/download/*');
 
 // ============================================================================
 // OPTION B: Dynamic custom middleware (new PoC version)
-// Routes: /api/download/dynamic/* - for dynamic price/wallet from database
+// Routes: /api/digital/download/* - for dynamic price/wallet from database
 // ============================================================================
-console.log('✅ Dynamic middleware configured: /api/download/dynamic/*');
+console.log('✅ Dynamic middleware configured: /api/digital/download/*');
 
 // Main middleware router
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   // Route A: Static test middleware (original working version)
-  if (pathname.startsWith('/api/download/static/')) {
-    console.log('\n🔵 ============ STATIC MIDDLEWARE ============');
-    console.log('🔵 URL:', request.url);
-    console.log('🔵 Using: x402-next paymentMiddleware (static)');
-
+  if (pathname.startsWith('/api/download/')) {
+    console.log('\n� ============ STATIC MIDDLEWARE ============');
+    console.log('� URL:', request.url);
+    console.log('� Using: x402-next paymentMiddleware (static)');
+    
     const response = await x402StaticMiddleware(request);
-
+    
     console.log('🔵 Status:', response?.status);
     console.log('🔵 ============ END STATIC ============\n');
-
+    
     return response;
   }
 
   // Route B: Dynamic custom middleware (new PoC)
-  if (pathname.startsWith('/api/download/dynamic/')) {
-    console.log('\n🟢 ============ DYNAMIC MIDDLEWARE ============');
+  if (pathname.startsWith('/api/digital/download/')) {
+    console.log('\n� ============ DYNAMIC MIDDLEWARE ============');
     console.log('🟢 URL:', request.url);
-    console.log('🟢 Using: Custom dynamic middleware with internal API fetch');
-
+    console.log('🟢 Using: Custom dynamic middleware with DB query');
+    
     const productId = pathname.split('/').pop();
     console.log('🟢 Product ID:', productId);
 
-    // Fetch product data from internal API (Edge runtime can't use Prisma)
-    const baseUrl = `${request.nextUrl.protocol}//${request.nextUrl.host}`;
-    const productApiUrl = `${baseUrl}/api/internal/product/${productId}`;
+    // Query database for product
+    const product = await prisma.digitalProduct.findUnique({
+      where: { id: productId }
+    });
 
-    console.log('🟢 Fetching product from:', productApiUrl);
-
-    const productResponse = await fetch(productApiUrl);
-
-    if (!productResponse.ok) {
-      console.log('❌ Product not found or error:', productResponse.status);
+    if (!product) {
+      console.log('❌ Product not found');
       return new NextResponse('Product not found', { status: 404 });
     }
-
-    const { product } = await productResponse.json();
 
     console.log('📦 Product:', product.title);
     console.log('💰 Price:', product.price, 'USDC units');
@@ -145,7 +141,7 @@ export async function middleware(request: NextRequest) {
 
     // No payment? Return 402 with dynamic requirements
     if (!paymentHeader) {
-      console.log('💳 No payment header - returning 402');
+      console.log('� No payment header - returning 402');
       return new NextResponse(
         JSON.stringify({
           x402Version: 1,
@@ -159,12 +155,13 @@ export async function middleware(request: NextRequest) {
       );
     }
 
-    console.log('💳 Payment header received, verifying...');
+    console.log('� Payment header received, verifying...');
 
-    // Decode payment using x402 utilities
+    // Decode payment (using x402 utilities via dynamic import to avoid compile errors)
     let decodedPayment;
     try {
-      const { exact } = await getX402Utils();
+      // Dynamic import to avoid top-level import errors
+      const { exact } = await import('x402/schemes');
       decodedPayment = exact.evm.decodePayment(paymentHeader);
       decodedPayment.x402Version = 1;
       console.log('✅ Payment decoded successfully');
@@ -182,7 +179,7 @@ export async function middleware(request: NextRequest) {
 
     // Verify payment using x402 facilitator
     try {
-      const { useFacilitator } = await getX402Utils();
+      const { useFacilitator } = await import('x402/verify');
       const { verify, settle } = useFacilitator({
         url: 'https://x402.org/facilitator'
       });
@@ -204,13 +201,13 @@ export async function middleware(request: NextRequest) {
       }
 
       console.log('✅ Verification successful!');
-      console.log('👤 Payer:', verification.payer);
+      console.log('� Payer:', verification.payer);
 
       // Let request through to API route
       const response = NextResponse.next();
 
       // Settle payment (move money on blockchain)
-      console.log('💸 Settling payment...');
+      console.log('� Settling payment...');
       const settlement = await settle(decodedPayment, paymentRequirements);
 
       if (settlement.success) {
@@ -230,12 +227,19 @@ export async function middleware(request: NextRequest) {
           ).toString('base64')
         );
 
-        // TODO: Store settlement in database via internal API
-        // (Edge runtime can't use Prisma directly)
-        console.log('💾 Transaction hash:', settlement.transaction);
+        // Store settlement in database
+        await prisma.downloadToken.create({
+          data: {
+            productId: product.id,
+            token: settlement.transaction,
+            expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) // 24h
+          }
+        });
+
+        console.log('💾 Download token created');
       }
 
-      console.log('🟢 ============ END DYNAMIC ============\n');
+      console.log('� ============ END DYNAMIC ============\n');
       return response;
     } catch (error) {
       console.log('❌ Settlement failed:', error);
@@ -255,9 +259,12 @@ export async function middleware(request: NextRequest) {
 }
 
 // Configure which paths the middleware should run on
+// Note: Next.js 15 uses specific matcher syntax
+// See: https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
 export const config = {
   matcher: [
-    '/api/download/static/:path*', // Static test route
-    '/api/download/dynamic/:path*' // Dynamic PoC route
+    '/api/download/:path*'
+    // Alternative patterns to try:
+    // '/api/download/(.*)',
   ]
 };
