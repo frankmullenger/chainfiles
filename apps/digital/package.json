@@ -44,6 +44,7 @@
     "server-only": "0.0.1",
     "sharp": "0.34.2",
     "vaul": "1.1.2",
+    "x402-next": "^0.6.5",
     "zod": "3.25.56"
   },
   "devDependencies": {

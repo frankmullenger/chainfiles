@@ -19,30 +19,17 @@ Get these from [Coinbase Developer Platform](https://portal.cdp.coinbase.com/):
 1. Sign in to CDP Portal
 2. Go to "API Keys" section
 3. Click "Create API Key"
-4. Save the credentials:
+4. Save the credentials to your `.env` file:
    ```bash
-   CDP_API_KEY_NAME=organizations/your-org-id/apiKeys/your-key-id
-   CDP_API_KEY_PRIVATE_KEY=-----BEGIN EC PRIVATE KEY-----\n...\n-----END EC PRIVATE KEY-----
+   CDP_API_KEY_ID=your-key-id-here
+   CDP_API_KEY_SECRET=your-secret-here
    ```
 
-> **Important**: The private key will only be shown once. Save it securely!
+> **Important**: The secret will only be shown once. Save it securely!
 
 ---
 
-### 2. **OnchainKit Project ID**
-
-From the same CDP Portal:
-
-1. Go to "OnchainKit" section
-2. Create a new project (or use existing)
-3. Copy the Project ID:
-   ```bash
-   NEXT_PUBLIC_ONCHAINKIT_PROJECT_ID=your-project-id-here
-   ```
-
----
-
-### 3. **Your Wallet Address**
+### 2. **Your Wallet Address**
 
 Use your MetaMask wallet address for receiving payments:
 
@@ -57,21 +44,14 @@ Use your MetaMask wallet address for receiving payments:
 
 ---
 
-### 4. **Download URL Secret**
-
-Generate a random secret for signing temporary download URLs:
-
-```bash
-# Run this command in your terminal:
-openssl rand -base64 32
-
-# Copy the output to .env:
-DOWNLOAD_URL_SECRET=your-generated-secret-here
-```
-
----
-
 ## 🧪 Testing on Base Sepolia
+
+### Network Configuration
+
+The app is pre-configured for Base Sepolia testnet:
+- **Network**: base-sepolia
+- **USDC Token**: `0x036CbD53842c5426634e7929541eC2318f3dCF7e`
+- **Payment Price**: $0.01 USD (hardcoded in middleware for MVP)
 
 ### Get Testnet USDC
 
@@ -98,12 +78,11 @@ You'll need Base Sepolia ETH and USDC for testing:
 After filling out all variables:
 
 - [ ] CDP API credentials copied from portal
-- [ ] OnchainKit project ID configured
 - [ ] MetaMask wallet address added
-- [ ] Download URL secret generated
 - [ ] Base Sepolia testnet selected in MetaMask
 - [ ] Have testnet ETH for gas fees
 - [ ] Have testnet USDC for testing payments
+- [ ] Dev server running: `pnpm --filter digital dev`
 
 ---
 
@@ -112,23 +91,24 @@ After filling out all variables:
 Once all environment variables are set:
 
 1. Restart the dev server: `pnpm --filter digital dev`
-2. Test wallet connection on the download page
-3. Test a complete payment flow with testnet USDC
+2. Visit the download test page: `http://localhost:3005/download/test-spike-123`
+3. Click "Test Download (Requires Payment)" to see 402 payment response
+4. Check browser console for payment data structure
 
 ---
 
 ## 🔒 Security Notes
 
 - **Never commit `.env` to git** (already in `.gitignore`)
-- **Keep CDP private key secure** - it has access to your CDP account
+- **Keep CDP API secret secure** - it has access to your CDP account
 - **Use testnet only** for development - switch to mainnet only when ready for production
-- **Generate a strong secret** for `DOWNLOAD_URL_SECRET` in production
+- For production, use proper secret management (environment variables, secret managers)
 
 ---
 
 ## 📚 Additional Resources
 
 - [Coinbase Developer Platform](https://portal.cdp.coinbase.com/)
-- [x402 Protocol Docs](https://docs.cdp.coinbase.com/x402/docs/welcome)
-- [OnchainKit Documentation](https://onchainkit.xyz/)
+- [x402 Protocol Docs](https://docs.x402.org/)
 - [Base Sepolia Explorer](https://sepolia.basescan.org/)
+- [Base Sepolia Faucet](https://www.coinbase.com/faucets/base-ethereum-sepolia-faucet)
