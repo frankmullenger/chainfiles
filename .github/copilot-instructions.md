@@ -17,6 +17,7 @@ applyTo: "**/*.{js,jsx,ts,tsx}"
   - we want to compile documentation that describes the system
   - if you want to write new docs, look for a logical place for those docs to sit by assessing the docs/ folder beforehand
   - we want to group docs together into articles that make sense to be together, maybe they cover a vertical aspect of the software
+  - if the docs pertain to an app in particular and that app has a docs/ folder, put the docs in there instead of the root docs/ folder
 - When we are working on a bug, don't remove all the logging until we have verified the bug is fixed.
 
 ## Suggested Nomenclature

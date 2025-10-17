@@ -53,10 +53,19 @@ const x402StaticMiddleware = paymentMiddleware(
   routeConfig,
   {
     url: 'https://x402.org/facilitator'
+  },
+  // Enable built-in paywall UI
+  {
+    appName: 'Digi Downloads',
+    appLogo: undefined, // Optional - could add logo later
+    cdpClientKey: process.env.CDP_CLIENT_KEY, // Optional - for onramp functionality
+    sessionTokenEndpoint: undefined // Optional - for session token API
   }
 );
 
-console.log('✅ Static middleware configured: /api/download/static/*');
+console.log(
+  '✅ Static middleware configured with paywall: /api/download/static/*'
+);
 
 // ============================================================================
 // OPTION B: Dynamic custom middleware (new PoC version)

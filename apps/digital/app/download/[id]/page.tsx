@@ -80,6 +80,24 @@ export default async function DownloadPage({ params }: DownloadPageProps) {
             </p>
           </div>
 
+          {/* Purchase & Download Button */}
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-lg border-2 border-green-200">
+            <h3 className="font-semibold text-green-900 mb-2">💳 Test Payment Flow</h3>
+            <p className="text-sm text-green-700 mb-4">
+              Click below to test the x402 payment flow with the built-in paywall UI.
+              This uses the static middleware with a hardcoded $0.01 price.
+            </p>
+            <a
+              href={`/api/download/static/${id}`}
+              className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-green-600 text-white hover:bg-green-700 h-10 px-4 py-2 w-full"
+            >
+              🔒 Purchase & Download ($0.01)
+            </a>
+            <p className="text-xs text-green-600 mt-3 italic">
+              ↑ Opens x402 paywall → Connect wallet → Pay with USDC → Download file
+            </p>
+          </div>
+
           {/* Client Component for Interactive Tests */}
           <DownloadTestClient productId={id} />
         </CardContent>
