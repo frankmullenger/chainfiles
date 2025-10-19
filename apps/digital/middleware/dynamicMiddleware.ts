@@ -29,7 +29,10 @@ export async function middleware(request: NextRequest) {
   console.log('  - X-PAYMENT present?', !!paymentHeader);
   if (paymentHeader) {
     console.log('  - X-PAYMENT length:', paymentHeader.length);
-    console.log('  - X-PAYMENT preview:', paymentHeader.substring(0, 50) + '...');
+    console.log(
+      '  - X-PAYMENT preview:',
+      paymentHeader.substring(0, 50) + '...'
+    );
   }
 
   // Fetch product data from internal API
@@ -44,7 +47,11 @@ export async function middleware(request: NextRequest) {
   }
 
   const { product } = await productResponse.json();
-  console.log('� Product loaded:', product.title, `$${(product.price / 100).toFixed(2)}`);
+  console.log(
+    '� Product loaded:',
+    product.title,
+    `$${(product.price / 100).toFixed(2)}`
+  );
 
   // Convert cents to USDC units (6 decimals)
   const priceInUSDCUnits = product.price * 10000;
@@ -99,7 +106,10 @@ export async function middleware(request: NextRequest) {
       console.log('🟢 Response:');
       console.log('  - Status:', response.status);
       console.log('  - Content-Type:', response.headers.get('Content-Type'));
-      console.log('  - X-PAYMENT-RESPONSE present?', !!response.headers.get('X-PAYMENT-RESPONSE'));
+      console.log(
+        '  - X-PAYMENT-RESPONSE present?',
+        !!response.headers.get('X-PAYMENT-RESPONSE')
+      );
       console.log('🟢 ============ END DYNAMIC ============\n');
 
       return response;
@@ -122,7 +132,10 @@ export async function middleware(request: NextRequest) {
     console.log('🟢 Response:');
     console.log('  - Status:', response.status);
     console.log('  - Content-Type:', response.headers.get('Content-Type'));
-    console.log('  - X-PAYMENT-RESPONSE present?', !!response.headers.get('X-PAYMENT-RESPONSE'));
+    console.log(
+      '  - X-PAYMENT-RESPONSE present?',
+      !!response.headers.get('X-PAYMENT-RESPONSE')
+    );
     console.log('🟢 ============ END DYNAMIC ============\n');
 
     return response;
@@ -136,7 +149,10 @@ export async function middleware(request: NextRequest) {
     decodedPayment = exact.evm.decodePayment(paymentHeader);
     console.log('🟢 Payment decoded successfully');
   } catch (error) {
-    console.log('❌ Failed to decode payment:', error instanceof Error ? error.message : String(error));
+    console.log(
+      '❌ Failed to decode payment:',
+      error instanceof Error ? error.message : String(error)
+    );
     const response = new NextResponse(
       JSON.stringify({
         x402Version: 1,
@@ -213,17 +229,27 @@ export async function middleware(request: NextRequest) {
 
     console.log('� Response:');
     console.log('  - Status:', response.status || 200);
-    console.log('  - Content-Type:', response.headers.get('Content-Type') || 'null');
-    console.log('  - X-PAYMENT-RESPONSE present?', !!response.headers.get('X-PAYMENT-RESPONSE'));
+    console.log(
+      '  - Content-Type:',
+      response.headers.get('Content-Type') || 'null'
+    );
+    console.log(
+      '  - X-PAYMENT-RESPONSE present?',
+      !!response.headers.get('X-PAYMENT-RESPONSE')
+    );
     console.log('🟢 ============ END DYNAMIC ============\n');
 
     return response;
   } catch (error) {
-    console.log('❌ Error in verification/settlement:', error instanceof Error ? error.message : String(error));
+    console.log(
+      '❌ Error in verification/settlement:',
+      error instanceof Error ? error.message : String(error)
+    );
     const response = new NextResponse(
       JSON.stringify({
         x402Version: 1,
-        error: error instanceof Error ? error.message : 'Payment processing failed',
+        error:
+          error instanceof Error ? error.message : 'Payment processing failed',
         accepts: [paymentRequirements]
       }),
       { status: 402, headers: { 'Content-Type': 'application/json' } }

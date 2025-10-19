@@ -1,3 +1,4 @@
+import { isAddress } from 'viem';
 import { z } from 'zod';
 
 export const createProductSchema = z.object({
@@ -30,7 +31,10 @@ export const createProductSchema = z.object({
       invalid_type_error: 'Seller wallet address must be a string.'
     })
     .trim()
-    .regex(/^0x[a-fA-F0-9]{40}$/, 'Invalid wallet address format')
+    .refine((address) => isAddress(address), {
+      message: 'Invalid wallet address format or checksum'
+    })
+    .transform((address) => address as `0x${string}`)
 });
 
 // Schema for form validation (without file)
@@ -67,4 +71,4 @@ export const createProductFormSchema = createProductSchema.extend({
 });
 
 export type CreateProductSchema = z.infer<typeof createProductSchema>;
-export type CreateProductFormSchema = z.infer<typeof createProductFormSchema>;
+export type CreateProductFormSchema = z.output<typeof createProductFormSchema>;

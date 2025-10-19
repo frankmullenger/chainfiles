@@ -215,7 +215,7 @@ export default function UploadPage(): React.JSX.Element {
                     <FormLabel>Seller Wallet Address</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="0x742d35Cc6634C0532925a3b8D54619f0B42d1234"
+                        placeholder="0x900a07B823233989540822cA86519027CCAD721d"
                         {...field}
                       />
                     </FormControl>

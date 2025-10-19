@@ -10,7 +10,7 @@ export function useZodForm<TSchema extends z.ZodTypeAny>(
   props: Omit<UseFormProps<TSchema['_input']>, 'resolver'> & {
     schema: TSchema;
   }
-): UseFormReturn<TSchema['_input'], unknown, TSchema['_input']> {
+): UseFormReturn<TSchema['_input'], unknown, TSchema['_output']> {
   return useForm<TSchema['_input']>({
     ...props,
     resolver: zodResolver(props.schema, undefined, {
