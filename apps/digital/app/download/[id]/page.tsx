@@ -82,18 +82,34 @@ export default async function DownloadPage({ params }: DownloadPageProps) {
 
           {/* Purchase & Download Button */}
           <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-lg border-2 border-green-200">
-            <h3 className="font-semibold text-green-900 mb-2">💳 Test Payment Flow</h3>
+            <h3 className="font-semibold text-green-900 mb-2">💳 Purchase This Product</h3>
             <p className="text-sm text-green-700 mb-4">
-              Click below to test the x402 payment flow with the built-in paywall UI.
-              This uses the static middleware with a hardcoded $0.01 price.
+              Pay with USDC on Base Sepolia. Click below to open the paywall, connect your wallet, and complete payment.
+            </p>
+            <a
+              href={`/api/download/dynamic/${id}`}
+              className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-green-600 text-white hover:bg-green-700 h-10 px-4 py-2 w-full"
+            >
+              🔒 Purchase & Download (${(product.price / 100).toFixed(2)})
+            </a>
+            <p className="text-xs text-green-600 mt-3 italic">
+              ↑ Uses dynamic middleware with database pricing ({product.price} cents)
+            </p>
+          </div>
+
+          {/* Test Static Middleware */}
+          <div className="bg-gradient-to-r from-blue-50 to-cyan-50 p-6 rounded-lg border-2 border-blue-200">
+            <h3 className="font-semibold text-blue-900 mb-2">🧪 Test Static Middleware ($0.01)</h3>
+            <p className="text-sm text-blue-700 mb-4">
+              Or test the x402 built-in paywall with hardcoded $0.01 price.
             </p>
             <a
               href={`/api/download/static/${id}`}
-              className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-green-600 text-white hover:bg-green-700 h-10 px-4 py-2 w-full"
+              className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700 h-10 px-4 py-2 w-full"
             >
-              🔒 Purchase & Download ($0.01)
+              🔒 Test Static Paywall ($0.01)
             </a>
-            <p className="text-xs text-green-600 mt-3 italic">
+            <p className="text-xs text-blue-600 mt-3 italic">
               ↑ Opens x402 paywall → Connect wallet → Pay with USDC → Download file
             </p>
           </div>
