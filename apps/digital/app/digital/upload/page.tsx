@@ -44,7 +44,7 @@ export default function UploadPage(): React.JSX.Element {
       title: 'Premium Design Template Pack',
       description: 'A collection of 10 high-quality Figma templates for modern web design. Includes landing pages, dashboards, and mobile app designs.',
       price: 29.99,
-      sellerWallet: '0x742d35Cc6634C0532925a3b8D54619f0B42d1234'
+      sellerWallet: '0x900a07B823233989540822cA86519027CCAD721d'
     }
   });
 
