@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { notFound } from 'next/navigation';
-import { CheckCircleIcon, FileIcon, PlusIcon } from 'lucide-react';
+import { CheckCircleIcon, FileIcon, PlusIcon, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@workspace/ui/components/button';
@@ -84,10 +84,8 @@ export default async function ProductPage({ params }: ProductPageProps): Promise
 
         {/* Important Notice */}
         <Alert variant="warning" className="gap-y-2">
-          <AlertTitle className="mb-1">
-            <span className="mr-2">⚠️</span>
-            Important Notice
-          </AlertTitle>
+          <AlertTriangle className="size-4" />
+          <AlertTitle className="mb-1">Important Notice</AlertTitle>
           <AlertDescription>
             Your product will be automatically deleted if no one downloads it within 7 days. Share your link soon to keep it active!
           </AlertDescription>
@@ -116,31 +114,33 @@ export default async function ProductPage({ params }: ProductPageProps): Promise
               </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* File details after description */}
+            <div>
+              <label className="text-sm font-medium text-muted-foreground">File</label>
+              <p className="font-medium">{product.filename}</p>
+              <p className="text-xs text-muted-foreground">
+                {product.fileSize ? formatFileSize(product.fileSize) : 'Unknown size'}
+              </p>
+            </div>
+
+            <Separator />
+
+            {/* Price and Payment Wallet side by side */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div>
                 <label className="text-sm font-medium text-muted-foreground">Price</label>
                 <p className="text-xl font-bold text-green-600">${priceInDollars} USDC</p>
               </div>
 
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">File</label>
-                <p className="font-medium">{product.filename}</p>
-                <p className="text-xs text-muted-foreground">
-                  {product.fileSize ? formatFileSize(product.fileSize) : 'Unknown size'}
+              <div className="md:col-span-3">
+                <label className="text-sm font-medium text-muted-foreground">Your Payment Wallet</label>
+                <p className="font-mono text-xs bg-muted p-2 rounded mt-1 break-all">
+                  {product.sellerWallet}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Where you'll receive USDC payments
                 </p>
               </div>
-            </div>
-
-            <Separator />
-
-            <div>
-              <label className="text-sm font-medium text-muted-foreground">Your Payment Wallet</label>
-              <p className="font-mono text-sm bg-muted p-3 rounded mt-1 break-all">
-                {product.sellerWallet}
-              </p>
-              <p className="text-xs text-muted-foreground mt-2">
-                This is where you'll receive USDC payments when customers purchase your product
-              </p>
             </div>
           </CardContent>
         </Card>
