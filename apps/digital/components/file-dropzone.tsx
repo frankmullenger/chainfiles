@@ -13,15 +13,12 @@ import { Button } from '@workspace/ui/components/button';
 import { cn } from '@workspace/ui/lib/utils';
 
 const ALLOWED_FILE_TYPES = {
-  'image/*': ['.jpg', '.jpeg', '.png', '.gif', '.webp'],
+  'image/*': ['.jpg', '.jpeg', '.png', '.webp'],
   'application/pdf': ['.pdf'],
-  'text/plain': ['.txt'],
-  'application/msword': ['.doc'],
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
-  'application/zip': ['.zip']
+  'text/plain': ['.txt']
 };
 
-const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 interface FileDropzoneProps {
   onFileSelect: (file: File | null) => void;
@@ -142,8 +139,8 @@ export function FileDropzone({
         </p>
 
         <div className="text-xs text-muted-foreground space-y-1">
-          <p>Supported formats: PDF, Images, TXT, DOC, DOCX, ZIP</p>
-          <p>Maximum file size: 50MB</p>
+          <p>Supported formats: PDF, Images (JPG, PNG, WebP), TXT</p>
+          <p>Maximum file size: 10MB</p>
         </div>
       </div>
     </div>

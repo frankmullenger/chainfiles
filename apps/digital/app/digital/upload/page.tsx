@@ -21,6 +21,7 @@ import {
 import { Input } from '@workspace/ui/components/input';
 import { Textarea } from '@workspace/ui/components/textarea';
 import { toast } from '@workspace/ui/components/sonner';
+import { Alert, AlertTitle, AlertDescription } from '@workspace/ui/components/alert';
 
 import { useZodForm } from '../../../hooks/use-zod-form';
 import { createProductFormSchema, type CreateProductFormSchema } from '../../../schemas/create-product-schema';
@@ -114,9 +115,9 @@ export default function UploadPage(): React.JSX.Element {
   return (
     <div className="container max-w-2xl mx-auto py-12">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Upload Digital Product</h1>
+        <h1 className="text-3xl font-bold">Sell Your Digital Product</h1>
         <p className="text-muted-foreground mt-2">
-          Create a new digital product listing that customers can purchase with USDC on Base.
+          Upload your digital file and start selling to customers worldwide. Set your price in USD and get paid instantly.
         </p>
       </div>
 
@@ -125,6 +126,19 @@ export default function UploadPage(): React.JSX.Element {
           <CardTitle>Product Details</CardTitle>
         </CardHeader>
         <CardContent>
+          {/* Info section */}
+          <Alert variant="info" className="mb-6">
+            <AlertTitle>How it works</AlertTitle>
+            <AlertDescription>
+              <ul className="space-y-1">
+                <li>• Set your price in US dollars - customers pay with USDC cryptocurrency</li>
+                <li>• Enter your crypto wallet address to receive payments instantly</li>
+                <li>• Upload your digital file (up to 10MB) - it stays private until purchased</li>
+                <li>• Share your product link with customers worldwide</li>
+              </ul>
+            </AlertDescription>
+          </Alert>
+
           <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-6">
               {/* Title field */}
@@ -170,19 +184,37 @@ export default function UploadPage(): React.JSX.Element {
                 name="price"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Price (USDC)</FormLabel>
+                    <FormLabel>Price in USD</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        min="1.00"
-                        max="10000"
-                        placeholder="1.99"
-                        {...field}
-                        value={field.value ? field.value.toFixed(2) : ''}
-                        onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
-                      />
+                      <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
+                          $
+                        </span>
+                        <Input
+                          type="number"
+                          step="0.01"
+                          min="1.00"
+                          max="10000"
+                          placeholder="1.99"
+                          className="pl-6"
+                          defaultValue="1.00"
+                          {...field}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            // Parse and update - let user type freely
+                            const numValue = parseFloat(value);
+                            if (!isNaN(numValue)) {
+                              field.onChange(numValue);
+                            } else if (value === '') {
+                              field.onChange(undefined);
+                            }
+                          }}
+                        />
+                      </div>
                     </FormControl>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Payments are processed in USDC on the Base network
+                    </p>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -194,7 +226,7 @@ export default function UploadPage(): React.JSX.Element {
                 name="file"
                 render={() => (
                   <FormItem>
-                    <FormLabel>Digital Product File</FormLabel>
+                    <FormLabel>Upload Your Digital Product</FormLabel>
                     <FormControl>
                       <FileDropzone
                         onFileSelect={setSelectedFile}
@@ -202,6 +234,9 @@ export default function UploadPage(): React.JSX.Element {
                         disabled={isSubmitting}
                       />
                     </FormControl>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Supported: PDF, images (JPG, PNG, WebP), TXT files (max 10MB)
+                    </p>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -213,13 +248,17 @@ export default function UploadPage(): React.JSX.Element {
                 name="sellerWallet"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Seller Wallet Address</FormLabel>
+                    <FormLabel>Your Wallet Address</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="0x900a07B823233989540822cA86519027CCAD721d"
+                        className="font-mono text-sm"
                         {...field}
                       />
                     </FormControl>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      This is where you'll receive payments. Must be a Base network wallet address.
+                    </p>
                     <FormMessage />
                   </FormItem>
                 )}

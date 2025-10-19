@@ -23,7 +23,17 @@ export const createProductSchema = z.object({
       invalid_type_error: 'Price must be a number.'
     })
     .min(1.0, 'Price must be at least $1.00')
-    .max(10000, 'Price cannot exceed $10,000'),
+    .max(10000, 'Price cannot exceed $10,000')
+    .refine(
+      (price) => {
+        // Check that price has at most 2 decimal places
+        const rounded = Math.round(price * 100) / 100;
+        return Math.abs(price - rounded) < 0.001;
+      },
+      {
+        message: 'Price can only have up to 2 decimal places'
+      }
+    ),
 
   sellerWallet: z
     .string({
@@ -43,29 +53,25 @@ export const createProductFormSchema = createProductSchema.extend({
     .instanceof(File, {
       message: 'Please select a file to upload.'
     })
-    .refine((file) => file.size <= 50 * 1024 * 1024, {
-      message: 'File size must be less than 50MB.'
+    .refine((file) => file.size <= 10 * 1024 * 1024, {
+      message: 'File size must be less than 10MB.'
     })
     .refine(
       (file) => {
         const allowedExtensions = [
+          '.pdf',
           '.jpg',
           '.jpeg',
           '.png',
-          '.gif',
           '.webp',
-          '.pdf',
-          '.txt',
-          '.doc',
-          '.docx',
-          '.zip'
+          '.txt'
         ];
         const fileName = file.name.toLowerCase();
         return allowedExtensions.some((ext) => fileName.endsWith(ext));
       },
       {
         message:
-          'File type not supported. Please upload PDF, image, TXT, DOC, DOCX, or ZIP files.'
+          'File type not supported. Please upload PDF, image (JPG, PNG, WebP), or TXT files.'
       }
     )
 });
