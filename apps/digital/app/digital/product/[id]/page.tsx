@@ -11,6 +11,7 @@ import {
   CardTitle
 } from '@workspace/ui/components/card';
 import { Separator } from '@workspace/ui/components/separator';
+import { Alert, AlertTitle, AlertDescription } from '@workspace/ui/components/alert';
 import { prisma } from '@workspace/database/client';
 
 import { CopyButton } from '~/components/copy-button';
@@ -58,126 +59,100 @@ export default async function ProductPage({ params }: ProductPageProps): Promise
         </div>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-3">
-        {/* Product Details */}
-        <div className="lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileIcon className="size-5" />
-                Product Details
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">Title</label>
-                <p className="text-lg font-semibold">{product.title}</p>
+      <div className="space-y-8">
+        {/* Shareable Link - Most Important Section */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-xl">📤 Your Product Link</CardTitle>
+            <p className="text-muted-foreground">Share this link with customers to sell your digital product</p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Product URL</label>
+              <div className="flex items-center gap-3">
+                <input
+                  type="text"
+                  value={downloadUrl}
+                  readOnly
+                  className="flex-1 text-sm bg-muted p-3 rounded-md font-mono border min-w-0"
+                />
+                <CopyButton value={downloadUrl} />
               </div>
+            </div>
+          </CardContent>
+        </Card>
 
-              {product.description && (
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">Description</label>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {product.description}
-                  </p>
-                </div>
-              )}
+        {/* Important Notice */}
+        <Alert variant="warning" className="gap-y-2">
+          <AlertTitle className="mb-1">
+            <span className="mr-2">⚠️</span>
+            Important Notice
+          </AlertTitle>
+          <AlertDescription>
+            Your product will be automatically deleted if no one downloads it within 7 days. Share your link soon to keep it active!
+          </AlertDescription>
+        </Alert>
 
-              <div className="grid grid-cols-2 gap-6">
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">Price</label>
-                  <p className="text-xl font-bold text-green-600">${priceInDollars} USDC</p>
-                </div>
+        {/* Product Details - Full Width */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <FileIcon className="size-5" />
+              Product Details
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div>
+              <label className="text-sm font-medium text-muted-foreground">Title</label>
+              <p className="text-lg font-semibold">{product.title}</p>
+            </div>
 
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">File</label>
-                  <p className="font-medium">{product.filename}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {product.fileSize ? formatFileSize(product.fileSize) : 'Unknown size'}
-                  </p>
-                </div>
-              </div>
-
+            {product.description && (
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Seller Wallet</label>
-                <p className="font-mono text-sm bg-muted p-2 rounded">
-                  {product.sellerWallet}
+                <label className="text-sm font-medium text-muted-foreground">Description</label>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {product.description}
                 </p>
               </div>
+            )}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="text-sm font-medium text-muted-foreground">Price</label>
+                <p className="text-xl font-bold text-green-600">${priceInDollars} USDC</p>
+              </div>
 
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Product ID</label>
-                <p className="font-mono text-sm bg-muted p-2 rounded">
-                  {product.id}
+                <label className="text-sm font-medium text-muted-foreground">File</label>
+                <p className="font-medium">{product.filename}</p>
+                <p className="text-xs text-muted-foreground">
+                  {product.fileSize ? formatFileSize(product.fileSize) : 'Unknown size'}
                 </p>
               </div>
-            </CardContent>
-          </Card>
-        </div>
+            </div>
 
-        {/* Actions Sidebar */}
-        <div className="space-y-6">
-          {/* Shareable Link */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Shareable Link</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">
-                  Share this link with customers
-                </label>
-                <div className="flex gap-2 mt-2">
-                  <input
-                    type="text"
-                    value={downloadUrl}
-                    readOnly
-                    className="flex-1 text-sm bg-muted p-2 rounded font-mono text-muted-foreground"
-                  />
-                  <CopyButton value={downloadUrl} />
-                </div>
-              </div>
+            <Separator />
 
-              <div className="text-xs text-muted-foreground bg-amber-50 border border-amber-200 p-3 rounded">
-                <p className="font-medium text-amber-800 mb-1">⚠️ Casual User Notice</p>
-                <p>This product will be automatically deleted after 30 days if no downloads occur.</p>
-              </div>
-            </CardContent>
-          </Card>
+            <div>
+              <label className="text-sm font-medium text-muted-foreground">Your Payment Wallet</label>
+              <p className="font-mono text-sm bg-muted p-3 rounded mt-1 break-all">
+                {product.sellerWallet}
+              </p>
+              <p className="text-xs text-muted-foreground mt-2">
+                This is where you'll receive USDC payments when customers purchase your product
+              </p>
+            </div>
+          </CardContent>
+        </Card>
 
-          {/* Download Stats */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Download Stats</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center">
-                <div className="text-3xl font-bold">0</div>
-                <div className="text-sm text-muted-foreground">Downloads</div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Actions */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Next Steps</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Link href="/digital/upload" className="block">
-                <Button className="w-full">
-                  <PlusIcon className="size-4 mr-2" />
-                  Create Another Product
-                </Button>
-              </Link>
-
-              <Link href="/digital" className="block">
-                <Button variant="outline" className="w-full">
-                  Back to Home
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
+        {/* Simple Action */}
+        <div className="flex justify-end">
+          <Link href="/digital/upload">
+            <Button>
+              <PlusIcon className="size-4 mr-2" />
+              Create Another Product
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
