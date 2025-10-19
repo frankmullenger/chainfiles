@@ -22,7 +22,7 @@ export const createProductSchema = z.object({
       required_error: 'Price is required.',
       invalid_type_error: 'Price must be a number.'
     })
-    .min(0.01, 'Price must be at least $0.01')
+    .min(1.0, 'Price must be at least $1.00')
     .max(10000, 'Price cannot exceed $10,000'),
 
   sellerWallet: z

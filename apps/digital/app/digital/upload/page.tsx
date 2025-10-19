@@ -43,7 +43,7 @@ export default function UploadPage(): React.JSX.Element {
     defaultValues: {
       title: 'Premium Design Template Pack',
       description: 'A collection of 10 high-quality Figma templates for modern web design. Includes landing pages, dashboards, and mobile app designs.',
-      price: 29.99,
+      price: 1.00,
       sellerWallet: '0x900a07B823233989540822cA86519027CCAD721d'
     }
   });
@@ -175,10 +175,11 @@ export default function UploadPage(): React.JSX.Element {
                       <Input
                         type="number"
                         step="0.01"
-                        min="0.01"
+                        min="1.00"
                         max="10000"
-                        placeholder="29.99"
+                        placeholder="1.99"
                         {...field}
+                        value={field.value ? field.value.toFixed(2) : ''}
                         onChange={(e) => field.onChange(parseFloat(e.target.value) || 0)}
                       />
                     </FormControl>
