@@ -1,23 +1,34 @@
 'use server';
 
-import fs from 'fs/promises';
-import path from 'path';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
 
-import { prisma } from '@workspace/database/client';
 import { ValidationError } from '@workspace/common/errors';
+import { prisma } from '@workspace/database/client';
+
+import { FileStorageFactory } from '../lib/file-storage';
 
 // File validation constants
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
-const ALLOWED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.pdf', '.txt', '.doc', '.docx', '.zip'];
+const ALLOWED_EXTENSIONS = [
+  '.jpg',
+  '.jpeg',
+  '.png',
+  '.gif',
+  '.webp',
+  '.pdf',
+  '.txt',
+  '.doc',
+  '.docx',
+  '.zip'
+];
 
 // FormData schema (for server action)
 const createProductFormDataSchema = z.object({
   title: z.string().min(1).max(100),
   description: z.string().max(500).optional(),
   price: z.coerce.number().min(0.01).max(10000),
-  sellerWallet: z.string().regex(/^0x[a-fA-F0-9]{40}$/),
+  sellerWallet: z.string().regex(/^0x[a-fA-F0-9]{40}$/)
 });
 
 // FormData-based server action for file upload
@@ -37,7 +48,7 @@ export async function createProductWithFile(formData: FormData) {
       title,
       description: description || undefined,
       price,
-      sellerWallet,
+      sellerWallet
     });
 
     // Validate file
@@ -50,9 +61,13 @@ export async function createProductWithFile(formData: FormData) {
     }
 
     const fileName = file.name.toLowerCase();
-    const isValidExtension = ALLOWED_EXTENSIONS.some(ext => fileName.endsWith(ext));
+    const isValidExtension = ALLOWED_EXTENSIONS.some((ext) =>
+      fileName.endsWith(ext)
+    );
     if (!isValidExtension) {
-      throw new ValidationError('File type not supported. Please upload PDF, image, TXT, DOC, DOCX, or ZIP files.');
+      throw new ValidationError(
+        'File type not supported. Please upload PDF, image, TXT, DOC, DOCX, or ZIP files.'
+      );
     }
 
     // Start database transaction
@@ -67,28 +82,30 @@ export async function createProductWithFile(formData: FormData) {
           filename: file.name,
           fileKey: '', // Will be set after file upload
           mimeType: file.type || null,
-          fileSize: file.size,
-        },
+          fileSize: file.size
+        }
       });
 
-      // Generate secure file key
-      const fileExtension = path.extname(file.name);
-      const fileKey = `${product.id}-${Date.now()}${fileExtension}`;
-      const uploadPath = path.join(process.cwd(), 'uploads', 'products', fileKey);
-
       try {
-        // Ensure upload directory exists
-        await fs.mkdir(path.dirname(uploadPath), { recursive: true });
-
-        // Save file to disk
+        // Upload file using adapter pattern
+        const fileStorage = FileStorageFactory.create();
         const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
-        await fs.writeFile(uploadPath, buffer);
 
-        // Update product with file key
+        const uploadResult = await fileStorage.upload(
+          buffer,
+          product.id,
+          file.name
+        );
+
+        // Update product with file information
         await tx.digitalProduct.update({
           where: { id: product.id },
-          data: { fileKey },
+          data: {
+            fileKey: uploadResult.filePath,
+            fileSize: uploadResult.fileSize,
+            mimeType: uploadResult.mimeType
+          }
         });
 
         return product;
@@ -101,14 +118,13 @@ export async function createProductWithFile(formData: FormData) {
 
     productId = result.id;
     console.log('Product created successfully:', productId);
-
   } catch (error) {
     console.error('Product creation error:', error);
-    
+
     if (error instanceof ValidationError) {
       throw error;
     }
-    
+
     // For any other errors, show generic message
     throw new ValidationError('Failed to create product. Please try again.');
   }
