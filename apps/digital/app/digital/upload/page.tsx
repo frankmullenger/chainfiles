@@ -1,7 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { InfoIcon } from 'lucide-react';
+import { InfoIcon, AlertTriangle, UploadIcon } from 'lucide-react';
+import Link from 'next/link';
 
 import { Button } from '@workspace/ui/components/button';
 import {
@@ -21,6 +22,7 @@ import {
 } from '@workspace/ui/components/form';
 import { Input } from '@workspace/ui/components/input';
 import { Textarea } from '@workspace/ui/components/textarea';
+import { Checkbox } from '@workspace/ui/components/checkbox';
 import { toast } from '@workspace/ui/components/sonner';
 import { Alert, AlertTitle, AlertDescription } from '@workspace/ui/components/alert';
 
@@ -46,7 +48,8 @@ export default function UploadPage(): React.JSX.Element {
       title: 'Premium Design Template Pack',
       description: 'A collection of 10 high-quality Figma templates for modern web design. Includes landing pages, dashboards, and mobile app designs.',
       // price: 1.00,
-      sellerWallet: '0x900a07B823233989540822cA86519027CCAD721d'
+      sellerWallet: '0x900a07B823233989540822cA86519027CCAD721d',
+      acceptTerms: false
     }
   });
 
@@ -115,11 +118,15 @@ export default function UploadPage(): React.JSX.Element {
 
   return (
     <div className="container max-w-2xl mx-auto py-12">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Sell Your Digital Product</h1>
-        <p className="text-muted-foreground mt-2">
-          Upload your digital file and start selling to customers worldwide. Set your price in USD and get paid instantly.
-        </p>
+      {/* Upload Header */}
+      <div className="flex items-center gap-3 mb-8">
+        <UploadIcon className="size-10 text-blue-600" />
+        <div>
+          <h1 className="text-3xl font-bold">Sell Your Digital Product</h1>
+          <p className="text-muted-foreground mt-1">
+            Upload your digital file and start selling to customers worldwide. Set your price in USD and get paid instantly.
+          </p>
+        </div>
       </div>
 
       <Card>
@@ -140,6 +147,8 @@ export default function UploadPage(): React.JSX.Element {
               </ul>
             </AlertDescription>
           </Alert>
+
+
 
           <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-6">
@@ -265,6 +274,41 @@ export default function UploadPage(): React.JSX.Element {
                   </FormItem>
                 )}
               />
+
+              {/* Terms Acceptance Section */}
+              <div className="py-4">
+                <FormField
+                  control={methods.control}
+                  name="acceptTerms"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel className="text-sm font-normal">
+                          I confirm this content is legal and I own the rights to distribute it.
+                        </FormLabel>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+
+                {/* Content Policy Alert - Below checkbox */}
+                <div className="mt-4">
+                  <Alert variant="warning">
+                    <AlertTriangle className="size-4" />
+                    <AlertTitle>Content Guidelines</AlertTitle>
+                    <AlertDescription>
+                      No illegal, adult, copyrighted, or harmful content. Files are subject to review.
+                    </AlertDescription>
+                  </Alert>
+                </div>
+              </div>
 
               <CardFooter className="px-0">
                 <Button

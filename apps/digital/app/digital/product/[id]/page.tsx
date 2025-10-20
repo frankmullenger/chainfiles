@@ -47,7 +47,7 @@ export default async function ProductPage({ params }: ProductPageProps): Promise
   };
 
   return (
-    <div className="container max-w-4xl mx-auto py-12">
+    <div className="container max-w-2xl mx-auto py-12">
       {/* Success Header */}
       <div className="flex items-center gap-3 mb-8">
         <CheckCircleIcon className="size-8 text-green-600" />

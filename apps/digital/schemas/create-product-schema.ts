@@ -73,7 +73,15 @@ export const createProductFormSchema = createProductSchema.extend({
         message:
           'File type not supported. Please upload PDF, image (JPG, PNG, WebP), or TXT files.'
       }
-    )
+    ),
+
+  acceptTerms: z
+    .boolean({
+      required_error: 'You must accept the terms of service to continue.'
+    })
+    .refine((value) => value === true, {
+      message: 'You must accept the terms of service to continue.'
+    })
 });
 
 export type CreateProductSchema = z.infer<typeof createProductSchema>;
