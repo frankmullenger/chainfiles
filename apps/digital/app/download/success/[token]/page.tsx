@@ -79,11 +79,13 @@ export default async function DownloadSuccessPage({ params }: DownloadSuccessPag
           <CardContent className="space-y-6">
             {!isExpired ? (
               <div className="text-center space-y-6">
-                {/* Download Icon - Centered and prominent */}
+                {/* Download Icon - Centered and prominent - NOW CLICKABLE */}
                 <div className="flex justify-center">
-                  <div className="w-20 h-20 bg-green-600 hover:bg-green-700 rounded-full flex items-center justify-center border-4 border-green-200 shadow-lg transition-colors cursor-pointer">
-                    <DownloadIcon className="size-10 text-white" />
-                  </div>
+                  <a href={`/api/download/file/${token}`} download>
+                    <div className="w-20 h-20 bg-green-600 hover:bg-green-700 rounded-full flex items-center justify-center border-4 border-green-200 shadow-lg transition-colors cursor-pointer">
+                      <DownloadIcon className="size-10 text-white" />
+                    </div>
+                  </a>
                 </div>
 
                 <Button

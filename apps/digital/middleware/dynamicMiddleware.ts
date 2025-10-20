@@ -12,8 +12,9 @@ export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   console.log('\n🟢 ============ DYNAMIC MIDDLEWARE ============');
-  console.log('🟢 URL:', request.url);
+  console.log('🟢 CURRENT BROWSER URL:', request.url);
   console.log('🟢 Method:', request.method);
+  console.log('🟢 Pathname:', pathname);
 
   const productId = pathname.split('/').pop();
   console.log('🟢 Product ID:', productId);
@@ -82,6 +83,7 @@ export async function middleware(request: NextRequest) {
     // Browser request - return HTML paywall
     if (accept?.includes('text/html') && userAgent?.includes('Mozilla')) {
       console.log('🌐 No payment - returning HTML paywall');
+      console.log('🌐 BROWSER WILL SHOW: Paywall at', request.url);
 
       // Convert cents to dollars for display
       const priceInDollars = product.price / 100;
@@ -238,10 +240,12 @@ export async function middleware(request: NextRequest) {
 
         // Redirect to success page instead of direct file download
         const successUrl = `${baseUrl}/download/success/${token}`;
-        console.log('↪️  Redirecting to success page:', successUrl);
+        console.log('↪️  MIDDLEWARE REDIRECTING TO:', successUrl);
+        console.log('🌐 BROWSER WILL NAVIGATE TO:', successUrl);
         console.log('🟢 ============ END DYNAMIC ============\n');
 
-        return NextResponse.redirect(successUrl);
+        // Use 307 redirect to ensure browser URL updates
+        return NextResponse.redirect(successUrl, 307);
       } catch (error) {
         console.error('❌ Error creating download token:', error);
 

@@ -8,7 +8,12 @@ export async function GET(
 ) {
   const { id } = await params;
 
+  console.log('\n🎯 ========== API ROUTE HIT ==========');
+  console.log('🎯 CURRENT BROWSER URL:', request.url);
   console.log('🎯 Dynamic API route hit: /api/download/dynamic/' + id);
+  console.log(
+    '🎯 ⚠️  WARNING: This route should NOT run if middleware redirected!'
+  );
   console.log('📦 Headers:', Object.fromEntries(request.headers.entries()));
 
   // Get product from database
@@ -22,6 +27,10 @@ export async function GET(
 
   // If we reach here, payment was verified AND settled by middleware!
   console.log('✅ Payment verified and settled! Serving download...');
+  console.log('🌐 BROWSER WILL SHOW: JSON response at', request.url);
+  console.log(
+    '🚨 PROBLEM: Browser should have been redirected to success page!'
+  );
 
   // Check for payment response header from middleware
   const paymentResponse = request.headers.get('X-PAYMENT-RESPONSE');
