@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { InfoIcon } from 'lucide-react';
 
 import { Button } from '@workspace/ui/components/button';
 import {
@@ -127,8 +128,9 @@ export default function UploadPage(): React.JSX.Element {
         </CardHeader>
         <CardContent>
           {/* Info section */}
-          <Alert variant="info" className="mb-6">
-            <AlertTitle>How it works</AlertTitle>
+          <Alert variant="info" className="mb-6 gap-y-2">
+            <InfoIcon className="size-4" />
+            <AlertTitle className="mb-1">How it works</AlertTitle>
             <AlertDescription>
               <ul className="space-y-1">
                 <li>• Set your price in US dollars - customers pay with USDC cryptocurrency</li>
