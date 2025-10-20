@@ -118,7 +118,8 @@ export class LocalFileStorage implements FileStorage {
         headers: {
           'Content-Type': mimeType,
           'Content-Disposition': `attachment; filename="${filename}"`,
-          'Cache-Control': 'private, no-cache, no-store, must-revalidate'
+          'Cache-Control': 'private, no-cache, no-store, must-revalidate',
+          'X-Content-Type-Options': 'nosniff'
         }
       });
     } catch (error) {
