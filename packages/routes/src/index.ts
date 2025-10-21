@@ -7,6 +7,7 @@ import { keys } from '../keys';
 export const baseUrl = {
   Dashboard: keys().NEXT_PUBLIC_DASHBOARD_URL,
   Marketing: keys().NEXT_PUBLIC_MARKETING_URL,
+  Digital: keys().NEXT_PUBLIC_DIGITAL_URL,
   PublicApi: keys().NEXT_PUBLIC_PUBLIC_API_URL
 } as const;
 
@@ -94,6 +95,20 @@ export const routes = {
     Roadmap: 'https://achromatic.canny.io',
     Story: `${baseUrl.Marketing}/story`,
     TermsOfUse: `${baseUrl.Marketing}/terms-of-use`
+  },
+  digital: {
+    Api: `${baseUrl.Digital}/api`,
+    Index: `${baseUrl.Digital}/digital`,
+    Upload: `${baseUrl.Digital}/digital/upload`,
+    download: {
+      Index: `${baseUrl.Digital}/digital/download/[id]`,
+      success: {
+        Index: `${baseUrl.Digital}/digital/download/success/[token]`
+      }
+    },
+    product: {
+      Index: `${baseUrl.Digital}/digital/product/[id]`
+    }
   }
 } as const;
 
