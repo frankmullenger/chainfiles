@@ -72,14 +72,16 @@ export default async function DownloadSuccessPage({ params }: DownloadSuccessPag
 
       <div className="space-y-8">
         {/* Prominent Download Section - Most Important */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl">📥 Download Your File</CardTitle>
-            <p className="text-muted-foreground">Your file is ready for download</p>
-          </CardHeader>
-          <CardContent className="space-y-6">
+        <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-8 rounded-lg border-2 border-green-200">
+          <div className="text-center space-y-6">
+            <div>
+              <h3 className="text-2xl font-bold text-green-900 mb-2">📥 Download Your File</h3>
+              <p className="text-green-700 mb-6">
+                Your file is ready for download
+              </p>
+            </div>
             {!isExpired ? (
-              <div className="text-center space-y-6">
+              <>
                 {/* Download Icon - Centered and prominent - NOW CLICKABLE */}
                 <div className="flex justify-center">
                   <a href={`/api/download/file/${token}`} download>
@@ -99,20 +101,20 @@ export default async function DownloadSuccessPage({ params }: DownloadSuccessPag
                   </a>
                 </Button>
 
-                <p className="text-lg text-muted-foreground">
-                  Your download link expires in <strong className="text-green-600">{hoursUntilExpiry} hours</strong>
+                <p className="text-lg text-green-700">
+                  Your download link expires in <strong className="text-green-900">{hoursUntilExpiry} hours</strong>
                 </p>
-              </div>
+              </>
             ) : (
-              <div className="text-center p-8 bg-red-50 border border-red-200 rounded-lg">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-6">
                 <h3 className="text-red-900 font-semibold text-xl mb-3">Download Expired</h3>
                 <p className="text-red-700">
                   This download link has expired. Please contact support if you need access to this file.
                 </p>
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Important Notice */}
         {!isExpired && (
@@ -125,6 +127,12 @@ export default async function DownloadSuccessPage({ params }: DownloadSuccessPag
                 <li>• The file will download with its original filename</li>
                 <li>• You can download multiple times before the link expires</li>
                 <li>• This download link expires in 24 hours and cannot be recovered</li>
+                <li>• <a
+                  href={`/digital/download/success/${token}`}
+                  className="underline font-medium"
+                >
+                  Bookmark this page here
+                </a> to return later</li>
               </ul>
             </AlertDescription>
           </Alert>
