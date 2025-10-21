@@ -29,7 +29,7 @@ import { Alert, AlertTitle, AlertDescription } from '@workspace/ui/components/al
 import { useZodForm } from '../../../hooks/use-zod-form';
 import { createProductFormSchema, type CreateProductFormSchema } from '../../../schemas/create-product-schema';
 import { createProductWithFile } from '../../../actions/create-product-with-file';
-import { FileDropzone } from '../../../components/file-dropzone';
+import { FileDropzone } from '~/components/digital/file-dropzone';
 
 export default function UploadPage(): React.JSX.Element {
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);

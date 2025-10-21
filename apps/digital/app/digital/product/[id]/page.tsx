@@ -14,7 +14,7 @@ import { Separator } from '@workspace/ui/components/separator';
 import { Alert, AlertTitle, AlertDescription } from '@workspace/ui/components/alert';
 import { prisma } from '@workspace/database/client';
 
-import { CopyButton } from '~/components/copy-button';
+import { CopyButton } from '~/components/digital/copy-button';
 
 interface ProductPageProps {
   params: Promise<{

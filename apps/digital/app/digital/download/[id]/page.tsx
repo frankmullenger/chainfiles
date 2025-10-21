@@ -9,8 +9,8 @@ import {
 } from '@workspace/ui/components/card';
 import { ShoppingCartIcon, FileIcon } from 'lucide-react';
 
-import { PurchaseButton } from './purchase-button';
-// import { TestStaticButton } from './test-static-button'; // Uncomment for testing
+import { PurchaseButton } from '~/components/digital/purchase-button';
+// import { TestStaticButton } from '~/components/digital/test-static-button'; // Uncomment for testing
 
 interface DownloadPageProps {
   params: Promise<{
