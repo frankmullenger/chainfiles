@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { notFound } from 'next/navigation';
-import { CheckCircleIcon, FileIcon, PlusIcon, AlertTriangle } from 'lucide-react';
+import { CheckCircleIcon, FileIcon, PlusIcon, AlertTriangle, InfoIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@workspace/ui/components/button';
@@ -79,6 +79,15 @@ export default async function ProductPage({ params }: ProductPageProps): Promise
                 <CopyButton value={downloadUrl} />
               </div>
             </div>
+
+            {/* Bookmark Reminder */}
+            <Alert variant="info" className="gap-y-2">
+              <InfoIcon className="size-4" />
+              <AlertTitle className="mb-1">Helpful Tip</AlertTitle>
+              <AlertDescription>
+                Don't lose your product link! Bookmark this page if you want to come back and get it again later.
+              </AlertDescription>
+            </Alert>
           </CardContent>
         </Card>
 
@@ -87,7 +96,7 @@ export default async function ProductPage({ params }: ProductPageProps): Promise
           <AlertTriangle className="size-4" />
           <AlertTitle className="mb-1">Important Notice</AlertTitle>
           <AlertDescription>
-            Your product will be automatically deleted if no one downloads it within 7 days. Share your link soon to keep it active!
+            Your product will be automatically deleted if no one downloads it within 7 days.
           </AlertDescription>
         </Alert>
 

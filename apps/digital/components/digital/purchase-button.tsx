@@ -17,7 +17,7 @@ export function PurchaseButton({ productId, price, title }: PurchaseButtonProps)
     <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-8 rounded-lg border-2 border-green-200">
       <div className="text-center space-y-6">
         <div>
-          <h3 className="text-2xl font-bold text-green-900 mb-2">💳 Purchase This Product</h3>
+          <h3 className="text-2xl font-bold text-green-900 mb-2">Purchase This Product</h3>
           <p className="text-green-700 mb-6">
             Click below to complete your purchase securely.
           </p>
