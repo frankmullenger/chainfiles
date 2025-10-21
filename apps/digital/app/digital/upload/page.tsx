@@ -119,8 +119,8 @@ export default function UploadPage(): React.JSX.Element {
   return (
     <div className="container max-w-2xl mx-auto py-12">
       {/* Upload Header */}
-      <div className="flex items-center gap-3 mb-8">
-        <UploadIcon className="size-10 text-blue-600" />
+      <div className="flex items-start gap-4 mb-8">
+        <UploadIcon className="size-10 text-blue-600 mt-1" />
         <div>
           <h1 className="text-3xl font-bold">Sell Your Digital Product</h1>
           <p className="text-muted-foreground mt-1">
