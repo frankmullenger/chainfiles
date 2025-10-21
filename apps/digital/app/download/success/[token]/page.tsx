@@ -113,17 +113,17 @@ export default async function DownloadSuccessPage({ params }: DownloadSuccessPag
           </CardContent>
         </Card>
 
-        {/* Download Instructions */}
+        {/* Important Notice */}
         {!isExpired && (
-          <Alert variant="info">
+          <Alert variant="warning">
             <InfoIcon className="size-4" />
-            <AlertTitle>Download Instructions</AlertTitle>
+            <AlertTitle>Do not refresh this page</AlertTitle>
             <AlertDescription>
               <ul className="mt-2 space-y-1">
                 <li>• Click the download button above to save the file to your device</li>
                 <li>• The file will download with its original filename</li>
                 <li>• You can download multiple times before the link expires</li>
-                <li>• Keep this page bookmarked for easy re-download access</li>
+                <li>• This download link expires in 24 hours and cannot be recovered</li>
               </ul>
             </AlertDescription>
           </Alert>

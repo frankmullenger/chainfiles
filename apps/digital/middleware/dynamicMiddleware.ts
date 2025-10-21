@@ -209,8 +209,21 @@ export async function middleware(request: NextRequest) {
     // Settle payment (move money on blockchain)
     const settlement = await settle(decodedPayment, paymentRequirements);
 
+    console.log(
+      '🔍 FULL SETTLEMENT OBJECT:',
+      JSON.stringify(settlement, null, 2)
+    );
+
     if (settlement.success) {
       console.log('✅ Settlement successful!');
+      console.log('💰 TRANSACTION DETAILS:');
+      console.log('  🔗 Transaction Hash:', settlement.transaction);
+      console.log('  🌐 Network:', settlement.network);
+      console.log('  👤 Payer Address:', settlement.payer);
+      console.log(
+        '  🔍 Block Explorer URL:',
+        `https://sepolia.basescan.org/tx/${settlement.transaction}`
+      );
 
       // Generate download token after successful payment
       console.log('🎫 Generating download token...');
@@ -238,14 +251,34 @@ export async function middleware(request: NextRequest) {
         const { token } = await downloadTokenResponse.json();
         console.log('✅ Download token created:', token);
 
-        // Redirect to success page instead of direct file download
+        // OPTION A: Redirect to success page (current approach - commented out)
         const successUrl = `${baseUrl}/download/success/${token}`;
         console.log('↪️  MIDDLEWARE REDIRECTING TO:', successUrl);
         console.log('🌐 BROWSER WILL NAVIGATE TO:', successUrl);
         console.log('🟢 ============ END DYNAMIC ============\n');
-
-        // Use 307 redirect to ensure browser URL updates
         return NextResponse.redirect(successUrl, 307);
+
+        // OPTION B: Let API route serve file directly (x402 pattern)
+        // console.log('⚡ Using NextResponse.next() - API route will serve file');
+        // console.log('🌐 BROWSER WILL STAY ON API URL BUT DOWNLOAD FILE');
+        // console.log('🟢 ============ END DYNAMIC ============\n');
+
+        // // Pass token and payment info to API route via headers
+        // const response = NextResponse.next();
+        // response.headers.set('X-DOWNLOAD-TOKEN', token);
+        // response.headers.set(
+        //   'X-PAYMENT-RESPONSE',
+        //   Buffer.from(
+        //     JSON.stringify({
+        //       success: true,
+        //       transaction: settlement.transaction,
+        //       network: settlement.network,
+        //       payer: settlement.payer
+        //     })
+        //   ).toString('base64')
+        // );
+
+        // return response;
       } catch (error) {
         console.error('❌ Error creating download token:', error);
 
