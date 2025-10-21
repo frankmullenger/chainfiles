@@ -35,7 +35,7 @@ export default async function ProductPage({ params }: ProductPageProps): Promise
     notFound();
   }
 
-  const downloadUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3005'}/download/${product.id}`;
+  const downloadUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3005'}/digital/download/${product.id}`;
   const priceInDollars = (product.price / 100).toFixed(2);
 
   const formatFileSize = (bytes: number): string => {

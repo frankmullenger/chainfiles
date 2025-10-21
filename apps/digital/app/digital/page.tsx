@@ -48,7 +48,7 @@ export default function DigitalPage(): React.JSX.Element {
               Click any shared link, connect your Base wallet, pay in USDC, and download instantly.
             </p>
             <Button variant="outline" className="w-full" asChild>
-              <Link href="/download/test-spike-123">
+              <Link href="/digital/download/test-spike-123">
                 🧪 Test x402 Middleware
               </Link>
             </Button>

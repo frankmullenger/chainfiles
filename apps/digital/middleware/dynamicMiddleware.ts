@@ -252,7 +252,7 @@ export async function middleware(request: NextRequest) {
         console.log('✅ Download token created:', token);
 
         // OPTION A: Redirect to success page (current approach - commented out)
-        const successUrl = `${baseUrl}/download/success/${token}`;
+        const successUrl = `${baseUrl}/digital/download/success/${token}`;
         console.log('↪️  MIDDLEWARE REDIRECTING TO:', successUrl);
         console.log('🌐 BROWSER WILL NAVIGATE TO:', successUrl);
         console.log('🟢 ============ END DYNAMIC ============\n');
