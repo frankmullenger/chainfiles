@@ -83,7 +83,7 @@ Custom middleware that:
 
 ```typescript
 // Fetch product from internal API
-const productResponse = await fetch(`${baseUrl}/api/internal/product/${productId}`);
+const productResponse = await fetch(`${baseUrl}/api/download/internal/product/${productId}`);
 const { product } = await productResponse.json();
 
 // Build dynamic requirements
@@ -99,7 +99,7 @@ await verify(decodedPayment, paymentRequirements);
 await settle(decodedPayment, paymentRequirements);
 ```
 
-**Important**: Next.js middleware runs in Edge Runtime, which doesn't support Prisma. So we fetch product data via an internal API route (`/api/internal/product/[id]`) that runs in Node.js runtime.
+**Important**: Next.js middleware runs in Edge Runtime, which doesn't support Prisma. So we fetch product data via an internal API route (`/api/download/internal/product/[id]`) that runs in Node.js runtime.
 
 ### Test It
 First, create a product:

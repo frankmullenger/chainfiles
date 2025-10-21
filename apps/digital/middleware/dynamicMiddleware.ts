@@ -38,7 +38,7 @@ export async function middleware(request: NextRequest) {
 
   // Fetch product data from internal API
   const baseUrl = `${request.nextUrl.protocol}//${request.nextUrl.host}`;
-  const productApiUrl = `${baseUrl}/api/internal/product/${productId}`;
+  const productApiUrl = `${baseUrl}/api/download/internal/product/${productId}`;
 
   const productResponse = await fetch(productApiUrl);
 
@@ -231,7 +231,7 @@ export async function middleware(request: NextRequest) {
       try {
         // Create DownloadToken record
         const downloadTokenResponse = await fetch(
-          `${baseUrl}/api/internal/create-download-token`,
+          `${baseUrl}/api/download/internal/tokens/create`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
