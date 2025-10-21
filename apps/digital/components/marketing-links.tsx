@@ -22,94 +22,99 @@ import {
 } from '@workspace/ui/components/brand-icons';
 
 export const MENU_LINKS = [
+  // {
+  //   title: 'Product',
+  //   items: [
+  //     {
+  //       title: 'Feature 1',
+  //       description: 'Short description here',
+  //       icon: <BoxIcon className="size-5 shrink-0" />,
+  //       href: '#',
+  //       external: false
+  //     },
+  //     {
+  //       title: 'Feature 2',
+  //       description: 'Short description here',
+  //       icon: <PlayIcon className="size-5 shrink-0" />,
+  //       href: '#',
+  //       external: false
+  //     },
+  //     {
+  //       title: 'Feature 3',
+  //       description: 'Short description here',
+  //       icon: <CircuitBoardIcon className="size-5 shrink-0" />,
+  //       href: '#',
+  //       external: false
+  //     },
+  //     {
+  //       title: 'Feature 4',
+  //       description: 'Short description here',
+  //       icon: <CuboidIcon className="size-5 shrink-0" />,
+  //       href: '#',
+  //       external: false
+  //     },
+  //     {
+  //       title: 'Feature 5',
+  //       description: 'Short description here',
+  //       icon: <LayoutIcon className="size-5 shrink-0" />,
+  //       href: '#',
+  //       external: false
+  //     }
+  //   ]
+  // },
+  // {
+  //   title: 'Resources',
+  //   items: [
+  //     {
+  //       title: 'Contact',
+  //       description: 'Get in touch with us',
+  //       icon: <SendHorizonalIcon className="size-5 shrink-0" />,
+  //       href: routes.marketing.Contact,
+  //       external: false
+  //     },
+  //     {
+  //       title: 'Roadmap',
+  //       description: 'See our upcoming features',
+  //       icon: <BookOpenIcon className="size-5 shrink-0" />,
+  //       href: routes.marketing.Roadmap,
+  //       external: true
+  //     },
+  //     {
+  //       title: 'Docs',
+  //       description: 'Browse through our documentation',
+  //       icon: <BookIcon className="size-5 shrink-0" />,
+  //       href: routes.marketing.Docs,
+  //       external: false
+  //     },
+  //     {
+  //       title: 'API Reference',
+  //       description: 'Build integrations with our API',
+  //       icon: <CodeIcon className="size-5 shrink-0" />,
+  //       href: baseUrl.PublicApi,
+  //       external: true
+  //     }
+  //   ]
+  // },
   {
-    title: 'Product',
-    items: [
-      {
-        title: 'Feature 1',
-        description: 'Short description here',
-        icon: <BoxIcon className="size-5 shrink-0" />,
-        href: '#',
-        external: false
-      },
-      {
-        title: 'Feature 2',
-        description: 'Short description here',
-        icon: <PlayIcon className="size-5 shrink-0" />,
-        href: '#',
-        external: false
-      },
-      {
-        title: 'Feature 3',
-        description: 'Short description here',
-        icon: <CircuitBoardIcon className="size-5 shrink-0" />,
-        href: '#',
-        external: false
-      },
-      {
-        title: 'Feature 4',
-        description: 'Short description here',
-        icon: <LayoutIcon className="size-5 shrink-0" />,
-        href: '#',
-        external: false
-      },
-      {
-        title: 'Feature 5',
-        description: 'Short description here',
-        icon: <FileBarChartIcon className="size-5 shrink-0" />,
-        href: '#',
-        external: false
-      }
-    ]
-  },
-  {
-    title: 'Resources',
-    items: [
-      {
-        title: 'Contact',
-        description: 'Reach out for assistance',
-        icon: <SendHorizonalIcon className="size-5 shrink-0" />,
-        href: routes.marketing.Contact,
-        external: false
-      },
-      {
-        title: 'Roadmap',
-        description: 'See what is coming next',
-        icon: <LayoutIcon className="size-5 shrink-0" />,
-        href: routes.marketing.Roadmap,
-        external: true
-      },
-      {
-        title: 'Docs',
-        description: 'Learn how to use our platform',
-        icon: <BookOpenIcon className="size-5 shrink-0" />,
-        href: routes.marketing.Docs,
-        external: false
-      },
-      {
-        title: 'API Reference',
-        description: 'Build integrations with our API',
-        icon: <CodeIcon className="size-5 shrink-0" />,
-        href: baseUrl.PublicApi,
-        external: true
-      }
-    ]
+    title: 'Upload',
+    href: routes.digital.Upload,
+    external: false
   },
   {
     title: 'Pricing',
     href: routes.marketing.Pricing,
     external: false
-  },
-  {
-    title: 'Blog',
-    href: routes.marketing.Blog,
-    external: false
-  },
-  {
-    title: 'Story',
-    href: routes.marketing.Story,
-    external: false
   }
+  // {
+  //   title: 'Blog',
+  //   href: routes.marketing.Blog,
+  //   external: false
+  // },
+  // {
+  //   title: 'Story',
+  //   href: routes.marketing.Story,
+  //   external: false
+  // }
 ];
 
 export const FOOTER_LINKS = [
