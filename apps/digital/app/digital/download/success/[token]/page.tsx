@@ -3,6 +3,7 @@ import Link from 'next/link';
 
 import { prisma } from '@workspace/database/client';
 import { Button } from '@workspace/ui/components/button';
+import { routes } from '@workspace/routes';
 import {
   Card,
   CardContent,
@@ -128,7 +129,7 @@ export default async function DownloadSuccessPage({ params }: DownloadSuccessPag
                 <li>• You can download multiple times before the link expires</li>
                 <li>• This download link expires in 24 hours and cannot be recovered</li>
                 <li>• <a
-                  href={`/digital/download/success/${token}`}
+                  href={routes.digital.download.success.Index.replace('[token]', token)}
                   className="underline font-medium"
                 >
                   Bookmark this page here

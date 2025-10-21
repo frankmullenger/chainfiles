@@ -5,6 +5,7 @@ import { z } from 'zod';
 
 import { ValidationError } from '@workspace/common/errors';
 import { prisma } from '@workspace/database/client';
+import { routes } from '@workspace/routes';
 
 import { FileStorageFactory } from '../lib/file-storage';
 
@@ -130,5 +131,5 @@ export async function createProductWithFile(formData: FormData) {
   }
 
   // Redirect outside try-catch so redirect error isn't caught
-  redirect(`/digital/product/${productId}`);
+  redirect(routes.digital.product.Index.replace('[id]', productId));
 }

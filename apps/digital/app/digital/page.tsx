@@ -2,6 +2,7 @@ import * as React from 'react';
 import Link from 'next/link';
 
 import { Button } from '@workspace/ui/components/button';
+import { routes } from '@workspace/routes';
 import {
   Card,
   CardContent,
@@ -48,7 +49,7 @@ export default function DigitalPage(): React.JSX.Element {
               Click any shared link, connect your Base wallet, pay in USDC, and download instantly.
             </p>
             <Button variant="outline" className="w-full" asChild>
-              <Link href="/digital/download/test-spike-123">
+              <Link href={routes.digital.download.Index.replace('[id]', 'test-spike-123')}>
                 🧪 Test x402 Middleware
               </Link>
             </Button>

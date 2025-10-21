@@ -8,6 +8,8 @@ import { exact } from 'x402/schemes';
 import { getPaywallHtml, toJsonSafe } from 'x402/shared';
 import { useFacilitator } from 'x402/verify';
 
+import { routes } from '@workspace/routes';
+
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
@@ -252,7 +254,10 @@ export async function middleware(request: NextRequest) {
         console.log('✅ Download token created:', token);
 
         // OPTION A: Redirect to success page (current approach - commented out)
-        const successUrl = `${baseUrl}/digital/download/success/${token}`;
+        const successUrl = routes.digital.download.success.Index.replace(
+          '[token]',
+          token
+        );
         console.log('↪️  MIDDLEWARE REDIRECTING TO:', successUrl);
         console.log('🌐 BROWSER WILL NAVIGATE TO:', successUrl);
         console.log('🟢 ============ END DYNAMIC ============\n');

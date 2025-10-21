@@ -13,6 +13,7 @@ import {
 import { Separator } from '@workspace/ui/components/separator';
 import { Alert, AlertTitle, AlertDescription } from '@workspace/ui/components/alert';
 import { prisma } from '@workspace/database/client';
+import { baseUrl, routes } from '@workspace/routes';
 
 import { CopyButton } from '~/components/digital/copy-button';
 
@@ -35,7 +36,7 @@ export default async function ProductPage({ params }: ProductPageProps): Promise
     notFound();
   }
 
-  const downloadUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3005'}/digital/download/${product.id}`;
+  const downloadUrl = routes.digital.download.Index.replace('[id]', product.id);
   const priceInDollars = (product.price / 100).toFixed(2);
 
   const formatFileSize = (bytes: number): string => {
