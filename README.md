@@ -1,68 +1,98 @@
 # ChainFiles 🔗💾
+> Bringing digital commerce onchain with instant, low-fee payments for creators worldwide
 
-> Seamless digital file sales powered by blockchain payments via x402 protocol
-
-ChainFiles revolutionizes digital content monetization by enabling instant, frictionless payments for digital downloads using cryptocurrency. Built on Base blockchain with USDC payments, it eliminates traditional payment barriers while providing creators with immediate settlement.
-
-## 🎯 Problem & Solution
-
-**Problem**: TikTok creators and digital content sellers face major barriers:
-- TikTok Shop doesn't support digital products yet
-- External solutions (Shopify, Stan Store) require monthly subscriptions and complex setup
-- Traditional payment processing needs business accounts, tax forms, and lengthy approval
-- Creators must link out to bio, losing potential sales in the flow
-
-**Solution**: ChainFiles eliminates these barriers completely:
-- Upload file → Set price → Share direct link ✨
-- No monthly fees, no business accounts, no payment processor setup
-- Buyers pay with crypto wallet and download instantly
-- Perfect for TikTok creators who need simple, direct digital sales
-
-## ✨ Key Features
-
-- **🎬 TikTok Creator Ready**: Share direct purchase links in videos or bio - no external store needed
-- **🚀 Zero Setup Friction**: Upload file, set price, get shareable link in under 60 seconds
-- **💸 No Monthly Fees**: Unlike Shopify/Stan Store - only pay gas fees when you make sales
-- **🔒 No Accounts Required**: Creators just connect wallet - no business registration or tax forms
-- **⚡ Instant Purchase Flow**: Buyers pay with wallet and download immediately
-- **🌐 Web3 Native**: Built-in Smart Wallet support for crypto newcomers
-- **🔐 Secure Access**: Temporary signed URLs with 24-hour expiry for downloaded content
-- **💎 Base Integration**: Ultra-low fees (often <$0.01) vs traditional 3%+ payment processing
-
-## 🎬 Perfect for TikTok Creators
-
-**Traditional Flow** (Complex & Expensive):
-```
-TikTok Video → Bio Link → Shopify/Stan Store → Payment Setup → Monthly Fees
-```
-
-**ChainFiles Flow** (Simple & Direct):
-```
-TikTok Video → Direct Purchase Link → Instant Download ✨
-```
-
-**Real Example**: 
-- Fitness creator sells workout PDF for $5
-- Traditional: $29/month Shopify + 3% fees = **$34+ overhead for 100 sales**
-- ChainFiles: x amount total gas fees (TBC) = **big savings**
-
-## 🛠 Technical Architecture
-
-- **Frontend**: Next.js 15 with TypeScript
-- **Blockchain**: Base (Ethereum Layer 2) 
-- **Payment Protocol**: x402 HTTP payment standard
-- **File Storage**: Local with cloud-ready architecture
-- **Wallet Integration**: OnchainKit for seamless UX
-
-## 🚧 Current Status
-
-**MVP Phase**: Core functionality complete and tested
-- ✅ File upload and payment flow
-- ✅ x402 protocol integration  
-- ✅ Base blockchain payments
-- ✅ Secure file serving
-- 🔄 UI/UX refinements in progress
+**Mission:** Enable any creator to sell digital content instantly using blockchain payments — no setup, no middlemen, no waiting.
 
 ---
 
-*Built for the future of digital commerce* 🚀
+## 🎯 The Problem
+
+Over **1 billion creators** face barriers to selling digital products:
+
+- Platforms like TikTok Shop don’t allow digital files (a gap for templates, guides, presets, etc.)
+- Traditional tools require business accounts, monthly fees, and multi-day settlement
+- Payment processors charge 3 %+ fees and delay payouts 3–7 days
+- Complex checkout flows cause creators to lose impulse-driven buyers
+
+**Result:** A massive untapped market for simple, direct digital sales.
+
+---
+
+## 💡 The Solution: x402 + Base
+
+**ChainFiles** lets creators go from upload → share → paid in under a minute.
+
+- **Upload → Set Price → Share Link** = 60 seconds to market  
+- **Pay → Download instantly** = zero friction for buyers  
+- Built on **Base** with < $0.01 fees  
+- Powered by **x402** — a pay-per-download HTTP payment standard  
+
+**Goal:** Make blockchain payments feel as seamless as any web checkout.
+
+---
+
+## 🔧 Architecture Overview
+
+**Core stack**
+- Base blockchain (USDC on Base Sepolia for MVP)
+- x402 protocol for payment-gated file access  
+- OnchainKit Smart Wallet for easy onboarding  
+- Next.js 15 + TypeScript front-end  
+- Secure file delivery via signed URLs (auto-expire after download)
+
+**Flow**
+
+- Creator: Upload → Set Price → Get link
+- Buyer: Click → Pay (USDC) → Auto-unlock download
+- Base: Confirms tx → ChainFiles releases file
+
+---
+
+## ✨ Key Innovations
+
+- **x402 Protocol on Base** — pay-per-resource without custom contracts  
+- **Wallet-abstracted UX** — users can pay with Smart Wallets, no crypto knowledge needed  
+- **Instant settlement** — funds arrive in seconds, globally accessible  
+- **Open standard** — architecture designed for other apps to adopt x402
+
+---
+
+## 🎬 Target Market
+
+Starting with **TikTok creators**:
+- 1 B+ active users  
+- High demand for educational and creative digital products  
+- Viral distribution potential: one creator’s success can onboard thousands  
+
+**Use cases:** workout PDFs, Lightroom presets, digital course files, music sample packs.  
+**Expansion path:** TikTok → Instagram → YouTube → wider creator economy.
+
+---
+
+## 🧱 Current Status (MVP)
+
+- ✅ File upload and secure delivery  
+- ✅ Base testnet payments (USDC / x402)  
+- ✅ Smart Wallet integration via OnchainKit  
+- ✅ Basenames ready  
+- 🔄 UI polish and UX refinements in progress  
+
+**Live demo:** https://chainfiles.app  
+**Repo:** This open-source repository
+
+---
+
+## 🚀 Impact
+
+**Short-term:**  
+- 1-minute digital sales setup  
+- Near instant wallet-to-wallet settlement  
+
+**Long-term:**  
+- Gateway for mainstream creators to join onchain commerce  
+- Establish x402 as a new open digital-commerce standard  
+- Contribute to Base’s mission of a billion users onchain  
+
+---
+
+*Built for the future of creator commerce* ✨

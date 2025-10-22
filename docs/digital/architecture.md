@@ -22,6 +22,17 @@ Technical architecture for the ChainFiles digital app, focusing on file upload/d
 7. **Token Generation**: Download token created with 24-hour expiry
 8. **File Access**: User redirected to success page with download link
 
+### Fees, Splitter & Sustainability
+
+- **Protocol fees (MVP):** Each purchase routes to our **Splitter** contract, which sends creator revenue to the seller and a small protocol fee to ChainFiles (addresses will be listed in this README once deployed).
+- **Who pays gas:** By default, the **buyer** pays gas on Base when sending USDC (ERC-20) or completing a smart-wallet user operation. We can optionally **sponsor gas** for smart-wallet users via a Paymaster on Base to offer “gasless” checkout.
+- **Typical network cost:** On Base mainnet, simple USDC transfers are typically often sub-cent to a few cents total network fee depending on congestion and calldata. Exact fees vary block-to-block.
+
+### File Retention & Pro
+
+- **Default retention:** Files with **no downloads are pruned after 7 days** (keeps storage costs low for the free tier).
+- **Pro (post-MVP):** Longer retention/no pruning and **reduced protocol fees**. We’ll publish exact tiers and pricing after MVP validation.
+
 ## File Serving Architecture
 
 ### Current Implementation (MVP)
