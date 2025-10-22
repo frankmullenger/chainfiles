@@ -13,7 +13,7 @@ export function Providers({
     <AnalyticsProvider>
       <ThemeProvider
         attribute="class"
-        defaultTheme="system"
+        defaultTheme="light"
         enableSystem
         disableTransitionOnChange
       >

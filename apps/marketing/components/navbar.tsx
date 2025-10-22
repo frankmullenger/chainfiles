@@ -137,7 +137,7 @@ export function Navbar(): React.JSX.Element {
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <ThemeToggle className="rounded-xl border-none shadow-none" />
+            {/* <ThemeToggle className="rounded-xl border-none shadow-none" /> */}
             {/* <Link
               href={routes.dashboard.auth.SignIn}
               className={cn(

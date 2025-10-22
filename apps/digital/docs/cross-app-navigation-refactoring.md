@@ -108,10 +108,11 @@ NEXT_PUBLIC_PUBLIC_API_URL=http://localhost:3002
 ## ✅ Latest Updates (2025-10-21)
 
 **Navbar Refactoring Completed:**
-- **Marketing App Navbar**: Simplified to Home (logo) → Upload → Pricing → Theme Toggle
-- **Digital App Navbar**: Simplified to Home (logo) → Upload → Pricing → Theme Toggle
-- **Commented Out**: Product dropdowns, Resources dropdowns, Blog, Story links, Sign In/Sign Up buttons
+- **Marketing App Navbar**: Simplified to Home (logo) → Upload → Pricing
+- **Digital App Navbar**: Simplified to Home (logo) → Upload → Pricing
+- **Commented Out**: Product dropdowns, Resources dropdowns, Blog, Story links, Sign In/Sign Up buttons, Theme Toggle
 - **Cross-App Navigation**: Upload links correctly route between apps using routes system
+- **Theme Configuration**: Default theme set to "light" (day mode), theme toggle still available in footer
 
 **Digital App Cleanup Completed:**
 - **Removed Marketing Routes**: blog, careers, contact, docs, pricing, privacy-policy, story, terms-of-use, cookie-policy
@@ -131,14 +132,17 @@ NEXT_PUBLIC_PUBLIC_API_URL=http://localhost:3002
 Marketing App (localhost:3001):
 ├── Logo → routes.marketing.Index (marketing home)
 ├── Upload → routes.digital.Upload (digital app)
-├── Pricing → routes.marketing.Pricing (marketing pricing)
-└── Theme Toggle
+└── Pricing → routes.marketing.Pricing (marketing pricing)
 
 Digital App (localhost:3005):
 ├── Logo → routes.marketing.Index (marketing home) 
 ├── Upload → routes.digital.Upload (current app)
-├── Pricing → routes.marketing.Pricing (marketing app)
-└── Theme Toggle
+└── Pricing → routes.marketing.Pricing (marketing app)
+
+Footer (Both Apps):
+├── Legal Links (Terms, Privacy, Cookie Policy)
+├── Copyright Notice
+└── Theme Toggle (Dark/Light Mode)
 ```
 
 ## Next Steps (Priority Order)
