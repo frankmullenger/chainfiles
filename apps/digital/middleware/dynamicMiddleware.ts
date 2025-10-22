@@ -39,7 +39,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Fetch product data from internal API
-  const baseUrl = `${request.nextUrl.protocol}//${request.nextUrl.host}`;
+  const baseUrl = `${request.nextUrl.protocol}//${request.headers.get('host')}`;
   const productApiUrl = `${baseUrl}/api/download/internal/product/${productId}`;
 
   const productResponse = await fetch(productApiUrl);
@@ -64,7 +64,7 @@ export async function middleware(request: NextRequest) {
     scheme: 'exact' as const,
     network: 'base-sepolia' as const,
     maxAmountRequired: priceInUSDCUnits.toString(),
-    resource: `${request.nextUrl.protocol}//${request.nextUrl.host}${pathname}`,
+    resource: `${baseUrl}${pathname}`,
     description: `Download ${product.title}`,
     mimeType: 'application/json',
     payTo: product.sellerWallet as `0x${string}`,
@@ -85,7 +85,7 @@ export async function middleware(request: NextRequest) {
     // Browser request - return HTML paywall
     if (accept?.includes('text/html') && userAgent?.includes('Mozilla')) {
       console.log('🌐 No payment - returning HTML paywall');
-      console.log('🌐 BROWSER WILL SHOW: Paywall at', request.url);
+      console.log('🌐 BROWSER WILL SHOW: Paywall at', `${baseUrl}${pathname}`);
 
       // Convert cents to dollars for display
       const priceInDollars = product.price / 100;
@@ -94,7 +94,7 @@ export async function middleware(request: NextRequest) {
       const html = getPaywallHtml({
         amount: priceInDollars,
         paymentRequirements: toJsonSafe([paymentRequirements]),
-        currentUrl: request.url,
+        currentUrl: `${baseUrl}${pathname}`,
         testnet: true, // Base Sepolia
         appName: 'Digi Downloads',
         appLogo: undefined,
