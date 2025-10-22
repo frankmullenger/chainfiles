@@ -1,58 +1,59 @@
-# Digi Downloads
+# ChainFiles Digital App
 
-## Environments
+The core application enabling creators to upload digital files and sell them using cryptocurrency payments on Base blockchain.
 
-### Dev
+## Purpose
 
+ChainFiles Digital App provides a simple, secure platform for digital content creators to monetize their work without traditional payment processing overhead. By leveraging Web3 technology, creators receive payments directly to their wallets while buyers enjoy immediate access to purchased content.
+
+## Technical Highlights
+
+### x402 Payment Protocol
+Implements the x402 HTTP payment standard for seamless pay-per-download functionality, enabling direct blockchain payments without complex integration.
+
+### Base Blockchain Integration
+- Low transaction fees for micropayments
+- Fast settlement times
+- USDC stablecoin support
+- OnchainKit integration for smooth wallet experience
+
+### Security Model
+- Files stored securely outside web directories
+- Token-based download access
+- Time-limited download permissions
+- Blockchain payment verification
+
+## User Experience
+
+### Simple Upload Process
+1. Visit upload page
+2. Select file and set price
+3. Connect wallet for payment reception
+4. Receive shareable link instantly
+
+### Streamlined Purchase Flow
+1. Click shared product link
+2. View product details and pricing
+3. Connect wallet and pay with crypto
+4. Download content immediately
+
+## Development Setup
+
+This app is part of a monorepo structure. See the main repository README for complete setup instructions.
+
+### Quick Start
 ```bash
-pnpm --filter marketing run dev     # http://localhost:3001/ (Webpack)
-pnpm --filter dashboard run dev     # http://localhost:3000/ (Webpack)
-pnpm --filter digital run dev       # http://localhost:3005/ (Webpack)
+# Install dependencies
+pnpm install
 
-# Optional: Use Turbopack (experimental, faster but may have compatibility issues)
-pnpm --filter marketing run dev:turbo  # http://localhost:3001/ (Turbopack)
-pnpm --filter dashboard run dev:turbo  # http://localhost:3000/ (Turbopack)
+# Start development server
+pnpm --filter digital dev
+
+# App runs on http://localhost:3003
 ```
 
-#### Turbopack Notes
-- **Status**: Experimental in Next.js 15.3.3
-- **Issue**: Runtime error with content-collections: `Cannot read properties of undefined (reading 'getAttribute')`
-- **Workaround**: Use regular Webpack build (default `dev` scripts)
-- **Future**: Re-enable when Turbopack + content-collections compatibility improves
+## Architecture
 
-## Stack
+The app follows modern React patterns with Next.js 15 App Router, emphasizing component composition and type safety. Key architectural decisions prioritize user experience and security while maintaining development simplicity.
 
-### Postgres
-
-```bash
-postgres-17 --version
-psql-17 postgres
-\du
-CREATE USER digidownloads_user WITH PASSWORD 'password_here';
-CREATE DATABASE digidownloads OWNER digidownloads_user;
-GRANT ALL PRIVILEGES ON DATABASE digidownloads TO digidownloads_user;
-ALTER USER digidownloads_user WITH SUPERUSER;
-\l
-\q
-
-# Format schema, adds missing relations
-pnpm --filter @workspace/database exec -- prisma format
-
-# Migrate schema
-pnpm --filter @workspace/database exec prisma migrate dev
-# OR
-pnpm --filter @workspace/database run migrate -- dev
-
-# Regen client
-pnpm --filter @workspace/database run generate
-
-# Reset database
-pnpm --filter @workspace/database exec -- prisma migrate reset
-# OR
-pnpm --filter @workspace/database exec prisma migrate reset
-
-# Open Prisma Studio (Database GUI)
-pnpm --filter @workspace/database run studio
-# Opens on http://localhost:3003 (no auto-browser, navigate manually)
-
-```
+For detailed technical architecture information, see [architecture.md](./architecture.md).

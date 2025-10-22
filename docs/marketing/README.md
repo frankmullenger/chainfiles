@@ -1,25 +1,39 @@
-# Marketing App Documentation
+# ChainFiles Marketing Site
 
-Documentation for the marketing app at `apps/marketing/` will be organized here.
+The public-facing marketing website for ChainFiles, showcasing the platform's capabilities and driving user adoption.
 
-## Overview
+## Purpose
 
-The marketing app serves as the public-facing website for Digi Downloads, providing:
+The marketing site serves as the primary entry point for potential users, providing clear value propositions, feature explanations, and onboarding pathways for both creators and buyers in the ChainFiles ecosystem.
 
-- Landing page and product information
-- User acquisition and onboarding flows
-- Integration with digital app for seamless user experience
+## Technical Implementation
 
-## Development
+### Next.js 15 App Router
+Modern React patterns with server components for optimal performance and SEO.
 
-To run the marketing app:
+### Content Collections
+Structured content management enabling non-technical team members to update marketing copy and blog posts.
 
+### Responsive Design
+Mobile-first approach using Tailwind CSS for consistent, accessible design across all devices.
+
+### Performance Optimization
+- Static generation where possible
+- Image optimization
+- Font optimization
+- Minimal JavaScript bundle
+
+## Development Setup
+
+Part of the ChainFiles monorepo structure.
+
+### Quick Start
 ```bash
+# Install dependencies
+pnpm install
+
+# Start development server
 pnpm --filter marketing dev
+
+# App runs on http://localhost:3001
 ```
-
-Runs on port 3001 by default.
-
-## Cross-App Navigation
-
-The marketing app uses the centralized routes package for navigation to the digital app. See the digital app documentation for implementation details.

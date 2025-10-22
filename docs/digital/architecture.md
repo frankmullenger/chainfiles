@@ -1,166 +1,158 @@
-# Digital Downloads Architecture
+# Digital App Technical Architecture
 
 ## Overview
 
-Digital downloads MVP using x402 Payment Protocol on Base blockchain. Users can upload digital files, set prices in USDC, and receive payments directly to their Base wallet.
+Technical architecture for the ChainFiles digital app, focusing on file upload/download flows, payment processing via x402 protocol, and secure file serving.
 
-## Tech Stack
+## High-Level Flows
 
-- **Frontend**: Next.js 15, Tailwind CSS, shadcn/ui
-- **Blockchain**: Base Sepolia (testnet), OnchainKit for wallet integration
-- **Payment**: x402 HTTP Payment Required protocol, USDC payments
-- **File Storage**: Local filesystem (MVP), future: S3/R2 with signed URLs
-- **Database**: PostgreSQL with Prisma ORM
+### File Upload Flow
+1. **Form Submission**: User submits upload form with file, title, price, and wallet address
+2. **File Storage**: File saved to `uploads/products/` directory with unique filename
+3. **Database Record**: `DigitalProduct` record created with file metadata and pricing
+4. **Response**: User receives shareable product URL (`/download/[productId]`)
 
-## User Flows
+### Download & Payment Flow
+1. **Product Page**: User visits `/download/[productId]` to view product details
+2. **Payment Initiation**: User clicks download button, redirected to `/api/download/dynamic/[productId]`
+3. **x402 Middleware**: Intercepts request, checks payment status
+4. **Payment Required**: If unpaid, returns HTTP 402 with payment interface
+5. **Payment Processing**: User completes payment via Web3 wallet
+6. **Payment Verification**: Transaction verified on Base blockchain
+7. **Token Generation**: Download token created with 24-hour expiry
+8. **File Access**: User redirected to success page with download link
 
-### Seller Flow
-1. Visit `/digital/upload`
-2. Fill form: title, price (USDC), wallet address
-3. Upload file (drag & drop)
-4. Submit → Get shareable link `/download/[id]`
-5. Share link on social media, etc.
+## File Serving Architecture
 
-### Buyer Flow
-1. Click shared link → `/download/[id]`
-2. See product page with file info & price
-3. Click "Download" → x402 payment required
-4. Connect Base wallet (Smart Wallet via OnchainKit)
-5. Pay in USDC → Payment confirmed on Base
-6. Get temporary download URL (24h expiry, unlimited downloads)
+### Current Implementation (MVP)
+- **Storage Location**: `uploads/products/` directory (outside public web root)
+- **Access Method**: API endpoint `/api/files/[token]` serves files after token validation
+- **Security**: Files never directly accessible via URL
+- **Token Validation**: 
+  - Tokens stored in `download_tokens` database table
+  - Time-limited access (24-hour default expiry)
+  - Associated with specific product and payment proof
 
-## Architecture Decisions
+### Token-Based Access Flow
+1. **Token Generation**: Created after successful payment verification
+2. **Database Storage**: Token stored with expiry timestamp and product reference
+3. **File Request**: User requests `/api/files/[token]`
+4. **Validation**: Server validates token exists and hasn't expired
+5. **File Serving**: If valid, file streamed directly from filesystem
+6. **Headers**: Proper content-type and download headers set
 
-### MVP Simplifications
-- **No user accounts**: Just wallet addresses
-- **Local file storage**: Files in `apps/digital/uploads/`
-- **Direct payment**: No platform fees initially
-- **Generous download policy**: 24h expiry, unlimited downloads
+### Future Architecture (Cloud Storage)
+- **Storage**: S3/R2/CloudFlare for scalable file storage
+- **Access Method**: Pre-signed URLs generated after payment
+- **Signing**: Server-side URL signing with expiry policies
+- **Benefits**: 
+  - Reduced server load
+  - Better global performance
+  - Automatic scaling
+  - Enhanced reliability
 
-### Security Model
-- Files stored outside public directory
-- Downloads protected by x402 middleware
-- Temporary signed URLs prevent direct access
-- Payment verification via Base blockchain
+## x402 Payment Protocol Implementation
 
-## App Structure
+### Protocol Overview
+The x402 "Payment Required" HTTP status code enables pay-per-resource access. When a client requests a protected resource without payment, the server responds with HTTP 402 and payment instructions.
 
+### Implementation Details
+
+#### Middleware Layer
+- **Location**: `/middleware/dynamicMiddleware.ts`
+- **Trigger**: Requests to `/api/download/dynamic/[productId]`
+- **Process**:
+  1. Extract product ID from URL
+  2. Fetch product details from database
+  3. Check payment status for client
+  4. Return payment interface or process successful payment
+
+#### Payment Interface Generation
+```typescript
+// Simplified flow
+if (!paymentReceived) {
+  return new Response(paymentHTML, {
+    status: 402,
+    headers: {
+      'Content-Type': 'text/html',
+      'Accept-Payment': 'crypto'
+    }
+  })
+}
 ```
-apps/digital/
-├── app/
-│   ├── digital/
-│   │   ├── page.tsx              # Landing page
-│   │   └── upload/
-│   │       └── page.tsx          # Upload form
-│   ├── download/[id]/
-│   │   └── page.tsx              # Product page (shareable link)
-│   └── api/
-│       ├── upload/
-│       │   └── route.ts          # Handle file upload
-│       ├── download/[id]/
-│       │   └── route.ts          # x402 protected download
-│       └── files/[token]/
-│           └── route.ts          # Serve temporary files
-├── uploads/                      # Private file storage
-├── hooks/
-│   └── use-zod-form.tsx         # Form validation helper
-└── components/                   # UI components (TBD)
-```
+
+#### Payment Verification
+1. **Transaction Check**: Verify USDC payment on Base blockchain
+2. **Amount Validation**: Confirm payment amount matches product price
+3. **Recipient Validation**: Ensure payment sent to correct seller wallet
+4. **Uniqueness**: Prevent double-spending of same transaction
+
+#### Success Handling
+1. **Token Creation**: Generate download token in database
+2. **Redirect**: Redirect user to success page with download access
+3. **Audit Trail**: Log successful payment and token generation
+
+### x402 Library Integration
+- **Payment UI**: Leverages x402 library for standard payment interface
+- **Wallet Integration**: OnchainKit handles Web3 wallet connections
+- **Transaction Processing**: Base network for fast, low-cost settlements
+- **Error Handling**: Graceful fallbacks for failed payments or network issues
 
 ## Database Schema
 
+### Core Tables
 ```sql
--- Digital products table
-CREATE TABLE digital_products (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  filename VARCHAR NOT NULL,           -- Original filename
-  file_key VARCHAR UNIQUE NOT NULL,    -- Stored filename/path
-  title VARCHAR(100) NOT NULL,         -- Display title
-  description TEXT,                    -- Optional description
-  price INTEGER NOT NULL,              -- Price in USDC cents (500 = $5.00)
-  seller_wallet VARCHAR NOT NULL,      -- Base wallet address
-  created_at TIMESTAMP DEFAULT NOW()
-);
+-- Product metadata and pricing
+digital_products (
+  id, filename, file_key, title, description, 
+  price, seller_wallet, created_at
+)
 
--- Download tokens for temporary access
-CREATE TABLE download_tokens (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  token VARCHAR UNIQUE NOT NULL,       -- Random access token
-  file_id UUID REFERENCES digital_products(id),
-  expires_at TIMESTAMP NOT NULL,       -- 24h from creation
-  download_count INTEGER DEFAULT 0,    -- Track usage
-  max_downloads INTEGER DEFAULT NULL,  -- NULL = unlimited
-  created_at TIMESTAMP DEFAULT NOW()
-);
+-- Time-limited access tokens
+download_tokens (
+  id, token, file_id, expires_at, 
+  download_count, max_downloads, created_at
+)
 ```
 
-## API Endpoints
+### Data Flow
+1. **Upload**: Creates `digital_products` record
+2. **Payment**: Verified via blockchain, no database record needed
+3. **Access**: Creates `download_tokens` record for file access
+4. **Download**: Validates token and serves file
 
-### Upload API
-- **POST** `/api/upload`
-- **Body**: `multipart/form-data`
-  - `file`: File upload
-  - `title`: Product title
-  - `price`: Price in USDC (decimal)
-  - `sellerWallet`: Base wallet address
-- **Response**: `{ productId, shareableLink }`
+## Security Architecture
 
-### Download Pages
-- **GET** `/download/[id]` - Product page (public)
-- **GET** `/api/download/[id]` - x402 protected endpoint
-- **GET** `/api/files/[token]` - Temporary file serving
+### File Protection
+- **No Direct Access**: Files stored outside web-accessible directories
+- **Token Validation**: All file access requires valid, non-expired tokens
+- **Single-Use Options**: Configurable token usage limits
+- **Audit Logging**: Track all file access attempts
 
-## Payment Integration
+### Payment Security
+- **Blockchain Verification**: All payments verified on-chain
+- **No Custody**: Direct wallet-to-wallet transactions
+- **Transaction Uniqueness**: Prevent replay attacks
+- **Amount Verification**: Exact price matching required
 
-### x402 Protocol Flow
-1. User requests `/api/download/[id]`
-2. x402 middleware checks payment status
-3. If unpaid: Return HTTP 402 + payment instructions
-4. If paid: Generate temporary token → return download URL
+### System Security
+- **Input Validation**: All uploads validated for type and size
+- **Path Traversal Prevention**: Secure file path handling
+- **Rate Limiting**: Prevent abuse of upload/download endpoints
+- **Error Handling**: No sensitive information in error responses
 
-### Base Integration
-- **Network**: Base Sepolia (testnet)
-- **Token**: USDC on Base
-- **Wallet**: OnchainKit Smart Wallet
-- **Payment verification**: On-chain transaction confirmation
+## Scalability Considerations
 
-## Future Enhancements
+### Current Limitations
+- **Filesystem Storage**: Single server file storage
+- **Direct File Serving**: Server bandwidth used for file delivery
+- **Database Queries**: Real-time token validation per download
 
-### Phase 2 - Scale Up
-- [ ] Cloud storage (S3/R2) with signed URLs
-- [ ] Platform fees via 0xSplits contract
-- [ ] Base mainnet deployment
-- [ ] Better file type validation
+### Scaling Solutions
+- **Cloud Storage**: Migrate to S3/R2 for unlimited capacity
+- **CDN Integration**: Global edge caching for faster delivery
+- **Pre-signed URLs**: Offload file serving from application servers
+- **Caching**: Redis for token validation and product metadata
+- **Load Balancing**: Horizontal scaling of application instances
 
-### Phase 3 - Features
-- [ ] Seller dashboard for analytics
-- [ ] Bulk uploads
-- [ ] Digital signatures/certificates
-- [ ] NFT integration for proof of purchase
-
-## Development Status
-
-### ✅ Completed
-- [x] Basic upload form (title, price, wallet)
-- [x] Landing page & navigation
-- [x] Form validation with Zod
-- [x] Basic UI components
-
-### 🚧 In Progress
-- [ ] File upload component
-- [ ] Database schema implementation
-- [ ] Upload API endpoint
-
-### 📋 Todo
-- [ ] Product download page
-- [ ] x402 payment integration
-- [ ] Base wallet connection
-- [ ] File serving with tokens
-- [ ] End-to-end testing on Base Sepolia
-
-## Notes
-
-- This is MVP architecture - many simplifications for speed
-- Focus on core x402 + Base integration first
-- Plan to clean up marketing/dashboard apps later
-- Document all endpoint changes here
+This architecture provides a secure, scalable foundation for digital file sales while maintaining simplicity in the core user flows.
