@@ -10,6 +10,7 @@
     "build:turbo": "content-collections build && next build --turbopack",
     "build:content": "content-collections build",
     "start": "next start --port 3001",
+    "prod:start": "next start --port ${PORT:-3006}",
     "analyze": "BUNDLE_ANALYZE=both next build",
     "analyze:turbo": "BUNDLE_ANALYZE=both next build --turbopack",
     "clean": "git clean -xdf .cache .content-collections .next .turbo build dist node_modules",
