@@ -17,6 +17,15 @@ export async function middleware(request: NextRequest) {
   console.log('🟢 CURRENT BROWSER URL:', request.url);
   console.log('🟢 Method:', request.method);
   console.log('🟢 Pathname:', pathname);
+  console.log('🔍 DEBUG: request.nextUrl.host:', request.nextUrl.host);
+  console.log(
+    '🔍 DEBUG: request.headers.get("host"):',
+    request.headers.get('host')
+  );
+  console.log(
+    '🔍 DEBUG: baseUrl will be:',
+    `${request.nextUrl.protocol}//${request.headers.get('host')}`
+  );
 
   const productId = pathname.split('/').pop();
   console.log('🟢 Product ID:', productId);
