@@ -48,7 +48,10 @@ export async function middleware(request: NextRequest) {
   }
 
   // Fetch product data from internal API
-  const baseUrl = `${request.nextUrl.protocol}//${request.headers.get('host')}`;
+  const host = request.headers.get('host');
+  const protocol = host?.includes('localhost') ? 'http:' : 'https:';
+  const baseUrl = `${protocol}//${host}`;
+  console.log('🔍 FINAL baseUrl:', baseUrl);
   const productApiUrl = `${baseUrl}/api/download/internal/product/${productId}`;
 
   const productResponse = await fetch(productApiUrl);
