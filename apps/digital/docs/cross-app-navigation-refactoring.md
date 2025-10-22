@@ -119,6 +119,13 @@ NEXT_PUBLIC_PUBLIC_API_URL=http://localhost:3002
 - **Removed Unused Components**: docs/ and blog/ component folders
 - **Preserved**: Homepage sections, cards, fragments (still used by current homepage)
 
+**Footer Simplification Completed:**
+- **Both Apps**: Commented out Product, Resources, About footer sections for MVP
+- **Both Apps**: Commented out newsletter subscription section 
+- **Both Apps**: Commented out social media links
+- **Preserved**: Legal section (Terms, Privacy, Cookie Policy) and theme switcher
+- **All commented code preserved** for future reactivation
+
 **Current Navigation Structure:**
 ```
 Marketing App (localhost:3001):

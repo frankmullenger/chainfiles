@@ -59,7 +59,7 @@ export function Footer(): React.JSX.Element {
               </div>
             ))}
           </div>
-          <div className="mt-10 space-y-4 lg:col-span-2 xl:mt-0">
+          {/* <div className="mt-10 space-y-4 lg:col-span-2 xl:mt-0">
             <h3 className="text-sm font-semibold text-foreground">
               Subscribe to our newsletter
             </h3>
@@ -80,7 +80,7 @@ export function Footer(): React.JSX.Element {
                 </Button>
               </div>
             </form>
-          </div>
+          </div> */}
         </div>
         <div className="mt-8 border-t pt-8">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
@@ -88,7 +88,7 @@ export function Footer(): React.JSX.Element {
               © {new Date().getFullYear()} {APP_NAME}. All rights reserved.
             </p>
             <div className="flex flex-row items-center gap-4">
-              {SOCIAL_LINKS.map((link) => (
+              {/* {SOCIAL_LINKS.map((link) => (
                 <Link
                   key={link.name}
                   title={link.name}
@@ -104,7 +104,7 @@ export function Footer(): React.JSX.Element {
               <Separator
                 orientation="vertical"
                 className="h-4"
-              />
+              /> */}
               <ThemeSwitcher />
             </div>
           </div>
