@@ -158,7 +158,7 @@ function MainMobileMenu({
               key={item.title}
               className="py-2"
             >
-              {item.items ? (
+              {'items' in item && item.items ? (
                 <Collapsible
                   open={expanded[item.title.toLowerCase()]}
                   onOpenChange={(isOpen) =>
@@ -186,7 +186,7 @@ function MainMobileMenu({
                   </CollapsibleTrigger>
                   <CollapsibleContent>
                     <ul className="mt-2 pl-4">
-                      {item.items.map((subItem) => (
+                      {('items' in item && Array.isArray(item.items) ? item.items : []).map((subItem) => (
                         <li key={subItem.title}>
                           <Link
                             href={subItem.href}
@@ -226,9 +226,9 @@ function MainMobileMenu({
                 </Collapsible>
               ) : (
                 <Link
-                  href={item.href}
-                  target={item.external ? '_blank' : undefined}
-                  rel={item.external ? 'noopener noreferrer' : undefined}
+                  href={'href' in item ? item.href : '#'}
+                  target={'external' in item && item.external ? '_blank' : undefined}
+                  rel={'external' in item && item.external ? 'noopener noreferrer' : undefined}
                   className={cn(
                     buttonVariants({ variant: 'ghost' }),
                     'w-full justify-start'
