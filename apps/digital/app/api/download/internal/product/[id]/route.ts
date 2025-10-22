@@ -3,20 +3,21 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@workspace/database/client';
 
 /**
- * Internal API route for middleware to fetch product data
+ * Internal API route for middleware to fetch product data by slug
  * This runs in Node.js runtime (not Edge), so Prisma works here
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> } // id param contains the slug
 ) {
   try {
-    const { id } = await params;
+    const { id: slug } = await params; // id param contains the slug
 
     const product = await prisma.digitalProduct.findUnique({
-      where: { id },
+      where: { slug },
       select: {
         id: true,
+        slug: true,
         title: true,
         price: true,
         sellerWallet: true

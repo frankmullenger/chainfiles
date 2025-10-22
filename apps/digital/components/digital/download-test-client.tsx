@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Button } from '@workspace/ui/components/button';
 
 interface DownloadTestClientProps {
-  productId: string;
+  productId: string; // This is actually the slug, but keeping prop name for compatibility
 }
 
 export function DownloadTestClient({ productId }: DownloadTestClientProps) {

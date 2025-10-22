@@ -19,24 +19,24 @@ import { CopyButton } from '~/components/digital/copy-button';
 
 interface ProductPageProps {
   params: Promise<{
-    id: string;
+    id: string; // This will now be the slug, but keeping param name for URL compatibility
   }>;
 }
 
 // Server Component - fetches data directly from database (Next.js best practice)
 export default async function ProductPage({ params }: ProductPageProps): Promise<React.JSX.Element> {
-  const { id } = await params;
+  const { id: slug } = await params; // id param contains the slug
 
-  // Fetch product directly from database - no API endpoint needed!
+  // Fetch product directly from database by slug
   const product = await prisma.digitalProduct.findUnique({
-    where: { id },
+    where: { slug },
   });
 
   if (!product) {
     notFound();
   }
 
-  const downloadUrl = routes.digital.download.Index.replace('[id]', product.id);
+  const downloadUrl = routes.digital.download.Index.replace('[id]', product.slug);
   const priceInDollars = (product.price / 100).toFixed(2);
 
   const formatFileSize = (bytes: number): string => {

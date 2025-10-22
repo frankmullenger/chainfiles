@@ -6,13 +6,13 @@ import { FileStorageFactory } from '~/lib/file-storage';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> } // id param contains the slug
 ) {
-  const { id } = await params;
+  const { id: slug } = await params; // id param contains the slug
 
   console.log('\n🎯 ========== API ROUTE HIT ==========');
   console.log('🎯 CURRENT BROWSER URL:', request.url);
-  console.log('🎯 Dynamic API route hit: /api/download/dynamic/' + id);
+  console.log('🎯 Dynamic API route hit: /api/download/dynamic/' + slug);
 
   // Check if middleware passed us a download token (Option B - direct serving)
   const downloadToken = request.headers.get('X-DOWNLOAD-TOKEN');
@@ -82,7 +82,7 @@ export async function GET(
 
   // Get product from database
   const product = await prisma.digitalProduct.findUnique({
-    where: { id }
+    where: { slug }
   });
 
   if (!product) {
@@ -108,7 +108,7 @@ export async function GET(
   return NextResponse.json({
     message:
       'Download successful! Payment verified and settled (dynamic middleware).',
-    productId: id,
+    productSlug: slug,
     product: {
       title: product.title,
       description: product.description,

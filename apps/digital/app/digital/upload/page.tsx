@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { InfoIcon, AlertTriangle, UploadIcon } from 'lucide-react';
+import { InfoIcon, AlertTriangle, UploadIcon, XCircleIcon } from 'lucide-react';
 import Link from 'next/link';
 
 import { Button } from '@workspace/ui/components/button';
@@ -327,14 +327,12 @@ export default function UploadPage(): React.JSX.Element {
       {/* Show error message */}
       {error && (
         <div className="mt-4">
-          <div className="bg-red-50 border border-red-200 rounded-md p-4">
-            <p className="text-red-800 font-medium">
-              ❌ ERROR: {error}
-            </p>
-            <p className="text-red-600 text-sm mt-2">
-              Check browser console for detailed error information
-            </p>
-          </div>
+          <Alert variant="destructive">
+            <XCircleIcon className="size-4" />
+            <AlertDescription>
+              {error}
+            </AlertDescription>
+          </Alert>
         </div>
       )}
     </div>

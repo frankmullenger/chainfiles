@@ -16,7 +16,7 @@ const routeConfig = {
         type: 'object',
         properties: {
           message: { type: 'string' },
-          productId: { type: 'string' }
+          productSlug: { type: 'string' }
         }
       }
     }

@@ -8,6 +8,7 @@ import { prisma } from '@workspace/database/client';
 import { routes } from '@workspace/routes';
 
 import { FileStorageFactory } from '../lib/file-storage';
+import { generateSlug } from '../lib/generate-slug';
 
 // File validation constants
 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
@@ -34,7 +35,7 @@ const createProductFormDataSchema = z.object({
 
 // FormData-based server action for file upload
 export async function createProductWithFile(formData: FormData) {
-  let productId: string;
+  let productSlug: string;
 
   try {
     // Extract and validate form fields
@@ -73,9 +74,13 @@ export async function createProductWithFile(formData: FormData) {
 
     // Start database transaction
     const result = await prisma.$transaction(async (tx) => {
+      // Generate unique slug
+      const slug = generateSlug(10); // 10 character slug
+
       // Create product record
       const product = await tx.digitalProduct.create({
         data: {
+          slug,
           title: validatedData.title,
           description: validatedData.description || null,
           price: Math.round(validatedData.price * 100), // Convert to cents
@@ -84,6 +89,10 @@ export async function createProductWithFile(formData: FormData) {
           fileKey: '', // Will be set after file upload
           mimeType: file.type || null,
           fileSize: file.size
+        },
+        select: {
+          id: true,
+          slug: true
         }
       });
 
@@ -117,8 +126,13 @@ export async function createProductWithFile(formData: FormData) {
       }
     });
 
-    productId = result.id;
-    console.log('Product created successfully:', productId);
+    productSlug = result.slug;
+    console.log(
+      'Product created successfully:',
+      result.id,
+      'with slug:',
+      productSlug
+    );
   } catch (error) {
     console.error('Product creation error:', error);
 
@@ -131,5 +145,5 @@ export async function createProductWithFile(formData: FormData) {
   }
 
   // Redirect outside try-catch so redirect error isn't caught
-  redirect(routes.digital.product.Index.replace('[id]', productId));
+  redirect(routes.digital.product.Index.replace('[id]', productSlug));
 }

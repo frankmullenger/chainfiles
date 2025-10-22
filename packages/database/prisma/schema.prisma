@@ -537,6 +537,7 @@ model WorkTimeSlot {
 
 model DigitalProduct {
   id           String   @id(map: "PK_DigitalProduct") @default(uuid()) @db.Uuid
+  slug         String   @unique @db.VarChar(21) // Public URL identifier (nanoid)
   title        String   @db.VarChar(100)
   description  String?  @db.VarChar(500)
   filename     String   @db.VarChar(255) // Original filename
@@ -551,6 +552,7 @@ model DigitalProduct {
   // Relations
   downloadTokens DownloadToken[]
 
+  @@index([slug], map: "IX_DigitalProduct_slug")
   @@index([sellerWallet], map: "IX_DigitalProduct_sellerWallet")
   @@index([createdAt], map: "IX_DigitalProduct_createdAt")
 }

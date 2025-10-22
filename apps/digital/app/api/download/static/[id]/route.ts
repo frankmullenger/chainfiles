@@ -2,12 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> } // id param contains the slug
 ) {
-  const { id } = await params;
+  const { id: slug } = await params; // id param contains the slug
 
   console.log('\n🎯 ========== STATIC API ROUTE ==========');
-  console.log('🎯 Product ID:', id);
+  console.log('🎯 Product Slug:', slug);
   console.log('📦 All Headers:', Object.fromEntries(request.headers.entries()));
 
   // Check for payment response header from middleware
@@ -38,7 +38,7 @@ export async function GET(
   // Create a test file to download
   const fileContent = `# Digital Download Test File
 
-Product ID: ${id}
+Product Slug: ${slug}
 Downloaded: ${new Date().toISOString()}
 Payment Status: Verified & Settled via x402
 Middleware: Static ($0.01)
@@ -58,7 +58,7 @@ Thank you for testing the x402 payment flow! 🎉
     status: 200,
     headers: {
       'Content-Type': 'text/plain',
-      'Content-Disposition': `attachment; filename="digital-download-${id}.txt"`,
+      'Content-Disposition': `attachment; filename="digital-download-${slug}.txt"`,
       'Content-Length': Buffer.from(fileContent).length.toString()
     }
   });

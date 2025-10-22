@@ -1,7 +1,7 @@
 'use client';
 
 interface PurchaseButtonProps {
-  productId: string;
+  productId: string; // This is actually the slug, but keeping prop name for compatibility
   price: number; // in cents
   title: string;
 }

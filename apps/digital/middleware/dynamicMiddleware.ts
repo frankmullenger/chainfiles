@@ -27,8 +27,8 @@ export async function middleware(request: NextRequest) {
     `${request.nextUrl.protocol}//${request.headers.get('host')}`
   );
 
-  const productId = pathname.split('/').pop();
-  console.log('🟢 Product ID:', productId);
+  const productSlug = pathname.split('/').pop();
+  console.log('🟢 Product Slug:', productSlug);
 
   // Log headers early (matching static format)
   const paymentHeader = request.headers.get('X-PAYMENT');
@@ -52,7 +52,8 @@ export async function middleware(request: NextRequest) {
   const protocol = host?.includes('localhost') ? 'http:' : 'https:';
   const baseUrl = `${protocol}//${host}`;
   console.log('🔍 FINAL baseUrl:', baseUrl);
-  const productApiUrl = `${baseUrl}/api/download/internal/product/${productId}`;
+  const productApiUrl = `${baseUrl}/api/download/internal/product/${productSlug}`;
+  console.log('🟢 Product API URL:', productApiUrl);
 
   const productResponse = await fetch(productApiUrl);
 
@@ -250,7 +251,7 @@ export async function middleware(request: NextRequest) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              productId: productId,
+              productSlug: productSlug,
               payerAddress: settlement.payer,
               transactionHash: settlement.transaction,
               network: settlement.network

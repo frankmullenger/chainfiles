@@ -14,18 +14,19 @@ import { PurchaseButton } from '~/components/digital/purchase-button';
 
 interface DownloadPageProps {
   params: Promise<{
-    id: string;
+    id: string; // This will now be the slug, but keeping param name for URL compatibility
   }>;
 }
 
 export default async function DownloadPage({ params }: DownloadPageProps) {
-  const { id } = await params;
+  const { id: slug } = await params; // id param contains the slug
 
-  // Fetch complete product data
+  // Fetch complete product data by slug
   const product = await prisma.digitalProduct.findUnique({
-    where: { id },
+    where: { slug },
     select: {
       id: true,
+      slug: true,
       title: true,
       description: true,
       filename: true,
@@ -66,13 +67,13 @@ export default async function DownloadPage({ params }: DownloadPageProps) {
       <div className="space-y-8">
         {/* Purchase Section - Most Important */}
         <PurchaseButton
-          productId={product.id}
+          productId={product.slug}
           price={product.price}
           title={product.title}
         />
 
         {/* Development Testing - Uncomment to enable */}
-        {/* <TestStaticButton productId={product.id} /> */}
+        {/* <TestStaticButton productId={product.slug} /> */}
 
         {/* Product Details */}
         <Card>

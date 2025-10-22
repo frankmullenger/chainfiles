@@ -8,19 +8,19 @@ import { prisma } from '@workspace/database/client';
  */
 export async function POST(request: NextRequest) {
   try {
-    const { productId, payerAddress, transactionHash, network } =
+    const { productSlug, payerAddress, transactionHash, network } =
       await request.json();
 
     console.log('🎫 Creating download token for:', {
-      productId,
+      productSlug,
       payerAddress,
       transactionHash,
       network
     });
 
-    // Verify product exists
+    // Verify product exists (query by slug)
     const product = await prisma.digitalProduct.findUnique({
-      where: { id: productId },
+      where: { slug: productSlug },
       select: { id: true, title: true }
     });
 
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     const downloadToken = await prisma.downloadToken.create({
       data: {
         token: crypto.randomUUID(), // Generate UUID token
-        productId: productId,
+        productId: product.id, // Use the UUID from database
         expiresAt: expiresAt,
         downloadCount: 0,
         maxDownloads: null // NULL = unlimited for MVP
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       token: downloadToken.token,
       expiresAt: downloadToken.expiresAt,
-      productId: productId
+      productId: product.id
     });
   } catch (error) {
     console.error('❌ Error creating download token:', error);

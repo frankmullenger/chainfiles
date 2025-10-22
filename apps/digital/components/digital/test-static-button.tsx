@@ -3,7 +3,7 @@
 import { Button } from '@workspace/ui/components/button';
 
 interface TestStaticButtonProps {
-  productId: string;
+  productId: string; // This is actually the slug, but keeping prop name for compatibility
 }
 
 export function TestStaticButton({ productId }: TestStaticButtonProps) {
