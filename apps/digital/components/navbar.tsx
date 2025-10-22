@@ -138,7 +138,7 @@ export function Navbar(): React.JSX.Element {
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle className="rounded-xl border-none shadow-none" />
-            <Link
+            {/* <Link
               href={routes.dashboard.auth.SignIn}
               className={cn(
                 buttonVariants({
@@ -159,7 +159,7 @@ export function Navbar(): React.JSX.Element {
               )}
             >
               Start for free
-            </Link>
+            </Link> */}
           </div>
         </nav>
         <MobileMenu className="lg:hidden" />

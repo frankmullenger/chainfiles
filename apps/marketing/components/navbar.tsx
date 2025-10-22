@@ -46,7 +46,7 @@ export function Navbar(): React.JSX.Element {
               >
                 <NavigationMenuList>
                   {MENU_LINKS.map((item, index) =>
-                    item.items ? (
+                    'items' in item && Array.isArray(item.items) ? (
                       <NavigationMenuItem key={index}>
                         <NavigationMenuTrigger
                           data-active={
@@ -108,7 +108,8 @@ export function Navbar(): React.JSX.Element {
                         <NavigationMenuLink
                           asChild
                           active={
-                            !item.external &&
+                            !('external' in item && item.external) &&
+                            'href' in item &&
                             pathname.startsWith(
                               getPathname(item.href, baseUrl.Marketing)
                             )
@@ -119,10 +120,10 @@ export function Navbar(): React.JSX.Element {
                           )}
                         >
                           <Link
-                            href={item.href}
-                            target={item.external ? '_blank' : undefined}
+                            href={'href' in item ? item.href : '#'}
+                            target={'external' in item && item.external ? '_blank' : undefined}
                             rel={
-                              item.external ? 'noopener noreferrer' : undefined
+                              'external' in item && item.external ? 'noopener noreferrer' : undefined
                             }
                           >
                             {item.title}
@@ -137,7 +138,7 @@ export function Navbar(): React.JSX.Element {
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle className="rounded-xl border-none shadow-none" />
-            <Link
+            {/* <Link
               href={routes.dashboard.auth.SignIn}
               className={cn(
                 buttonVariants({
@@ -158,7 +159,7 @@ export function Navbar(): React.JSX.Element {
               )}
             >
               Start for free
-            </Link>
+            </Link> */}
           </div>
         </nav>
         <MobileMenu className="lg:hidden" />

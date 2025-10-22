@@ -108,9 +108,9 @@ NEXT_PUBLIC_PUBLIC_API_URL=http://localhost:3002
 ## ✅ Latest Updates (2025-10-21)
 
 **Navbar Refactoring Completed:**
-- **Marketing App Navbar**: Simplified to Home (logo) → Upload → Pricing
-- **Digital App Navbar**: Simplified to Home (logo) → Upload → Pricing  
-- **Commented Out**: Product dropdowns, Resources dropdowns, Blog, Story links
+- **Marketing App Navbar**: Simplified to Home (logo) → Upload → Pricing → Theme Toggle
+- **Digital App Navbar**: Simplified to Home (logo) → Upload → Pricing → Theme Toggle
+- **Commented Out**: Product dropdowns, Resources dropdowns, Blog, Story links, Sign In/Sign Up buttons
 - **Cross-App Navigation**: Upload links correctly route between apps using routes system
 
 **Digital App Cleanup Completed:**
@@ -131,12 +131,14 @@ NEXT_PUBLIC_PUBLIC_API_URL=http://localhost:3002
 Marketing App (localhost:3001):
 ├── Logo → routes.marketing.Index (marketing home)
 ├── Upload → routes.digital.Upload (digital app)
-└── Pricing → routes.marketing.Pricing (marketing pricing)
+├── Pricing → routes.marketing.Pricing (marketing pricing)
+└── Theme Toggle
 
 Digital App (localhost:3005):
 ├── Logo → routes.marketing.Index (marketing home) 
 ├── Upload → routes.digital.Upload (current app)
-└── Pricing → routes.marketing.Pricing (marketing app)
+├── Pricing → routes.marketing.Pricing (marketing app)
+└── Theme Toggle
 ```
 
 ## Next Steps (Priority Order)
