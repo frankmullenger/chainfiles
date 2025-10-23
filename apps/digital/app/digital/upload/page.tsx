@@ -44,6 +44,14 @@ export default function UploadPage(): React.JSX.Element {
   const methods = useZodForm({
     schema: createProductFormSchema,
     mode: 'onSubmit',
+    defaultValues: {
+      title: '',
+      description: '',
+      price: undefined,
+      sellerWallet: '',
+      acceptTerms: false,
+      file: undefined
+    }
   });
 
   // Update form value when file is selected
@@ -217,7 +225,7 @@ export default function UploadPage(): React.JSX.Element {
                       </div>
                     </FormControl>
                     <p className="text-xs text-muted-foreground mt-1">
-                      Payments are processed in USDC on the Base network
+                      Minimum $1, payments are processed in USDC on the Base network
                     </p>
                     <FormMessage />
                   </FormItem>
