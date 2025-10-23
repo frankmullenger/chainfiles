@@ -96,15 +96,15 @@ export const MENU_LINKS = [
   //   ]
   // },
   {
-    title: 'Upload',
+    title: 'Get Started',
     href: routes.digital.Upload,
     external: false
   },
-  {
-    title: 'Pricing',
-    href: routes.marketing.Pricing,
-    external: false
-  }
+  // {
+  //   title: 'Pricing',
+  //   href: routes.marketing.Pricing,
+  //   external: false
+  // }
   // {
   //   title: 'Blog',
   //   href: routes.marketing.Blog,

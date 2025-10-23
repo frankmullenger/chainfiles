@@ -21,7 +21,7 @@ export function CTA(): React.JSX.Element {
           delay={0.6}
         >
           <Link
-            href={routes.dashboard.auth.SignUp}
+            href={routes.digital.Upload}
             className={cn(buttonVariants({ variant: 'default' }), 'rounded-xl')}
           >
             Start for free

@@ -27,7 +27,7 @@ export function Solution(): React.JSX.Element {
                 of the features below don't exists.
               </p>
             </div>
-            <div className="mx-auto xl:container xl:rounded-xl xl:bg-neutral-50 xl:p-6 dark:xl:bg-neutral-900">
+            {/* <div className="mx-auto xl:container xl:rounded-xl xl:bg-neutral-50 xl:p-6 dark:xl:bg-neutral-900">
               <div className="grid auto-rows-[minmax(200px,auto)] grid-cols-12 gap-6">
                 <BentoCustomersCard
                   className="col-span-12 md:col-span-6 xl:col-span-4"
@@ -60,7 +60,7 @@ export function Solution(): React.JSX.Element {
                   transition={{ duration: 0.5, delay: 0.8 }}
                 />
               </div>
-            </div>
+            </div> */}
             <div className="-ml-8 w-[calc(100%+64px)] border-t border-dashed sm:-ml-20 sm:w-[calc(100%+160px)]" />
             <div className="grid gap-10 sm:container lg:grid-cols-2">
               <div className="order-1 lg:order-2">

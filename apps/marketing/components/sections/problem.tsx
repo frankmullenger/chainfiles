@@ -8,21 +8,21 @@ import { TextGenerateWithSelectBoxEffect } from '~/components/fragments/text-gen
 const DATA = [
   {
     icon: <UserPlusIcon className="size-5 shrink-0" />,
-    title: 'Problem 1',
+    title: 'Friction to start selling',
     description:
-      'Describe a significant problem your ideal customer profile has. Explain how this problem impacts their goals or daily operations.'
+      'Creators face long signups, store setup steps, and plugin installs before they can sell a single file. Simple products shouldn’t need a full e-commerce stack.'
   },
   {
     icon: <BarChartIcon className="size-5 shrink-0" />,
-    title: 'Problem 2',
+    title: 'Fees cut deep into earnings',
     description:
-      'Describe a significant problem your ideal customer profile has. Explain how this problem impacts their goals or daily operations.'
+      'High platform and payment fees make small digital sales barely worth the effort, especially for creators selling low-cost items.'
   },
   {
     icon: <WorkflowIcon className="size-5 shrink-0" />,
-    title: 'Problem 3',
+    title: 'Slow payouts and chargebacks',
     description:
-      'Describe a significant problem your ideal customer profile has. Explain how this problem impacts their goals or daily operations.'
+      'Weekly or delayed payouts make cash flow slow, and chargebacks on digital goods are common and hard to fight.'
   }
 ];
 
@@ -31,7 +31,7 @@ export function Problem(): React.JSX.Element {
     <GridSection>
       <div className="px-4 py-20 text-center">
         <h2 className="text-3xl font-semibold md:text-5xl">
-          <TextGenerateWithSelectBoxEffect words="Attention Grabbing Title" />
+          Selling digital files shouldn't be this hard
         </h2>
       </div>
       <div className="grid divide-y border-t border-dashed md:grid-cols-3 md:divide-x md:divide-y-0">

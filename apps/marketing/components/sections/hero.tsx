@@ -36,7 +36,7 @@ function HeroPill(): React.JSX.Element {
       transition={{ duration: 0.8 }}
       className="flex items-center justify-center"
     >
-      <Link href="#">
+      <Link href={routes.digital.Upload}>
         <Badge
           variant="outline"
           className="group h-8 rounded-full px-3 text-xs font-medium shadow-xs duration-200 hover:bg-accent/50 sm:text-sm"
@@ -48,7 +48,7 @@ function HeroPill(): React.JSX.Element {
             orientation="vertical"
             className="mx-2"
           />
-          Put an announcement here 🎉
+          Alpha launched 🎉
           <ChevronRightIcon className="ml-1.5 size-3 shrink-0 text-foreground transition-transform group-hover:translate-x-0.5" />
         </Badge>
       </Link>
@@ -64,8 +64,8 @@ function HeroTitle(): React.JSX.Element {
       transition={{ delay: 0.2, duration: 0.4 }}
     >
       <h1 className="mt-6 text-center text-[48px] font-bold leading-[54px] tracking-[-1.2px] [font-kerning:none] sm:text-[56px] md:text-[64px] lg:text-[76px] lg:leading-[74px] lg:tracking-[-2px]">
-        Your revolutionary
-        <br /> Next.js SaaS
+        Get Paid Directly
+        <br /> By Your Audience
       </h1>
     </motion.div>
   );
@@ -79,8 +79,8 @@ function HeroDescription(): React.JSX.Element {
       transition={{ delay: 0.4, duration: 0.4 }}
       className="mx-auto mt-3 max-w-[560px] text-balance text-center text-lg leading-[26px] text-muted-foreground sm:text-xl lg:mt-6"
     >
-      This is a demo application built with Achromatic. It will save you time
-      and effort building your next SaaS.
+      Sell your digital content with crypto payments that arrive instantly in your wallet.
+      Keep more of what you earn while building a direct relationship with your supporters.
     </motion.p>
   );
 }
@@ -94,7 +94,7 @@ function HeroButtons(): React.JSX.Element {
       className="mx-auto flex w-full flex-col gap-2 px-7 sm:w-auto sm:flex-row sm:px-0"
     >
       <Link
-        href={routes.dashboard.auth.SignUp}
+        href={routes.digital.Upload}
         className={cn(
           buttonVariants({
             variant: 'default'
@@ -104,7 +104,7 @@ function HeroButtons(): React.JSX.Element {
       >
         Start for free
       </Link>
-      <Link
+      {/* <Link
         href={routes.marketing.Contact}
         className={cn(
           buttonVariants({
@@ -114,7 +114,7 @@ function HeroButtons(): React.JSX.Element {
         )}
       >
         Talk to sales
-      </Link>
+      </Link> */}
     </motion.div>
   );
 }
@@ -361,14 +361,14 @@ export function Hero(): React.JSX.Element {
   return (
     <GridSection className="overflow-x-hidden">
       <MainDashedGridLines />
-      <div className="mx-auto mt-16 flex flex-col gap-6 px-2 sm:mt-20 sm:px-1 md:mt-24 lg:mt-32">
+      <div className="mx-auto mt-16 flex flex-col gap-6 px-2 pb-20 sm:mt-20 sm:px-1 md:mt-24 lg:mt-32 lg:pb-24">
         <div className="gap-2">
           <HeroPill />
           <HeroTitle />
         </div>
         <HeroDescription />
         <HeroButtons />
-        <HeroIllustration />
+        {/* <HeroIllustration /> */}
       </div>
     </GridSection>
   );
