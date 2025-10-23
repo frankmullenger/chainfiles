@@ -32,7 +32,7 @@ export function Solution(): React.JSX.Element {
 
             <div className="-ml-8 w-[calc(100%+64px)] border-t border-dashed sm:-ml-20 sm:w-[calc(100%+160px)]" />
 
-            <div className="grid gap-10 sm:container lg:grid-cols-2">
+            <div className="grid gap-16 sm:container lg:grid-cols-2 lg:items-center">
               <div className="order-1 lg:order-2">
                 <h2 className="mb-2.5 mt-8 text-3xl font-semibold md:text-5xl">
                   Simple, fast, and built for creators
