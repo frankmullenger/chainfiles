@@ -206,26 +206,26 @@ export const DOCS_LINKS = [
     icon: <CuboidIcon className="size-4 shrink-0 text-muted-foreground" />,
     items: [
       {
-        title: 'Introduction',
+        title: 'Sellers',
         href: '/docs',
         items: []
       },
       {
-        title: 'Dependencies',
-        href: '/docs/dependencies',
+        title: 'Buyers',
+        href: '/docs/buyers',
         items: []
       }
     ]
   },
-  {
-    title: 'Guides',
-    icon: <BookIcon className="size-4 shrink-0 text-muted-foreground" />,
-    items: [
-      {
-        title: 'Using MDX',
-        href: '/docs/using-mdx',
-        items: []
-      }
-    ]
-  }
+  // {
+  //   title: 'Guides',
+  //   icon: <BookIcon className="size-4 shrink-0 text-muted-foreground" />,
+  //   items: [
+  //     {
+  //       title: 'Using MDX',
+  //       href: '/docs/using-mdx',
+  //       items: []
+  //     }
+  //   ]
+  // }
 ];

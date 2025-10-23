@@ -211,8 +211,8 @@ export const DOCS_LINKS = [
         items: []
       },
       {
-        title: 'Dependencies',
-        href: '/docs/dependencies',
+        title: 'Buyers',
+        href: '/docs/buyers',
         items: []
       }
     ]
