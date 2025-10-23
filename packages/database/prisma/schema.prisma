@@ -550,25 +550,54 @@ model DigitalProduct {
   updatedAt    DateTime @updatedAt
 
   // Relations
-  downloadTokens DownloadToken[]
+  downloadTokens      DownloadToken[]
+  paymentTransactions PaymentTransaction[]
 
   @@index([slug], map: "IX_DigitalProduct_slug")
   @@index([sellerWallet], map: "IX_DigitalProduct_sellerWallet")
   @@index([createdAt], map: "IX_DigitalProduct_createdAt")
 }
 
-model DownloadToken {
-  id            String   @id(map: "PK_DownloadToken") @default(uuid()) @db.Uuid
-  token         String   @unique @db.VarChar(255)
-  productId     String   @db.Uuid
-  expiresAt     DateTime
-  downloadCount Int      @default(0)
-  maxDownloads  Int? // NULL = unlimited
-  createdAt     DateTime @default(now())
+model PaymentTransaction {
+  id               String   @id(map: "PK_PaymentTransaction") @default(uuid()) @db.Uuid
+  transactionHash  String   @unique @db.VarChar(66) // Blockchain transaction hash (0x + 64 chars)
+  network          String   @db.VarChar(20) // "base-sepolia", "base", etc.
+  payerAddress     String   @db.VarChar(42) // Wallet address that paid
+  recipientAddress String   @db.VarChar(42) // Seller wallet address
+  amountPaid       Int // Amount in USDC cents (matches product price)
+  currency         String   @default("USDC") @db.VarChar(10) // Currency used
+  status           String   @default("confirmed") @db.VarChar(20) // "pending", "confirmed", "failed"
+  blockNumber      Int? // Block number where transaction was mined
+  gasUsed          String?  @db.VarChar(20) // Gas used for transaction
+  createdAt        DateTime @default(now()) // When payment was initiated
+  confirmedAt      DateTime @default(now()) // When payment was confirmed on blockchain
 
   // Relations
-  product DigitalProduct @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId      String          @db.Uuid
+  product        DigitalProduct  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  downloadTokens DownloadToken[]
+
+  @@index([productId], map: "IX_PaymentTransaction_productId")
+  @@index([payerAddress], map: "IX_PaymentTransaction_payerAddress")
+  @@index([transactionHash], map: "IX_PaymentTransaction_transactionHash")
+  @@index([createdAt], map: "IX_PaymentTransaction_createdAt")
+}
+
+model DownloadToken {
+  id                   String   @id(map: "PK_DownloadToken") @default(uuid()) @db.Uuid
+  token                String   @unique @db.VarChar(255)
+  productId            String   @db.Uuid
+  paymentTransactionId String?  @db.Uuid // Optional link to payment transaction
+  expiresAt            DateTime
+  downloadCount        Int      @default(0)
+  maxDownloads         Int? // NULL = unlimited
+  createdAt            DateTime @default(now())
+
+  // Relations
+  product            DigitalProduct      @relation(fields: [productId], references: [id], onDelete: Cascade)
+  paymentTransaction PaymentTransaction? @relation(fields: [paymentTransactionId], references: [id], onDelete: SetNull)
 
   @@index([productId], map: "IX_DownloadToken_productId")
+  @@index([paymentTransactionId], map: "IX_DownloadToken_paymentTransactionId")
   @@index([expiresAt], map: "IX_DownloadToken_expiresAt")
 }

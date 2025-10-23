@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     const { productSlug, payerAddress, transactionHash, network } =
       await request.json();
 
-    console.log('🎫 Creating download token for:', {
+    console.log('🎫 Creating payment transaction and download token for:', {
       productSlug,
       payerAddress,
       transactionHash,
@@ -21,40 +21,101 @@ export async function POST(request: NextRequest) {
     // Verify product exists (query by slug)
     const product = await prisma.digitalProduct.findUnique({
       where: { slug: productSlug },
-      select: { id: true, title: true }
+      select: {
+        id: true,
+        title: true,
+        price: true,
+        sellerWallet: true
+      }
     });
 
     if (!product) {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 });
     }
 
-    // Create download token with 24-hour expiry and unlimited downloads
-    const expiresAt = new Date();
-    expiresAt.setHours(expiresAt.getHours() + 24); // 24 hours from now
+    // Check if transaction already exists (prevent duplicates)
+    const existingTransaction = await prisma.paymentTransaction.findUnique({
+      where: { transactionHash }
+    });
 
-    const downloadToken = await prisma.downloadToken.create({
-      data: {
-        token: crypto.randomUUID(), // Generate UUID token
-        productId: product.id, // Use the UUID from database
-        expiresAt: expiresAt,
-        downloadCount: 0,
-        maxDownloads: null // NULL = unlimited for MVP
+    if (existingTransaction) {
+      console.log('⚠️ Transaction already exists, returning existing token');
+
+      // Find existing download token for this transaction
+      const existingToken = await prisma.downloadToken.findFirst({
+        where: { paymentTransactionId: existingTransaction.id }
+      });
+
+      if (existingToken) {
+        return NextResponse.json({
+          token: existingToken.token,
+          expiresAt: existingToken.expiresAt,
+          productId: product.id,
+          paymentTransactionId: existingTransaction.id
+        });
       }
+    }
+
+    // Create both PaymentTransaction and DownloadToken in a transaction
+    const result = await prisma.$transaction(async (tx) => {
+      // Create payment transaction record
+      const paymentTransaction = await tx.paymentTransaction.create({
+        data: {
+          transactionHash,
+          network,
+          payerAddress,
+          recipientAddress: product.sellerWallet,
+          amountPaid: product.price, // Price in cents
+          currency: 'USDC',
+          status: 'confirmed', // Middleware already verified this
+          productId: product.id
+        }
+      });
+
+      console.log('💳 Payment transaction created:', paymentTransaction.id);
+
+      // Create download token with 24-hour expiry
+      const expiresAt = new Date();
+      expiresAt.setHours(expiresAt.getHours() + 24); // 24 hours from now
+
+      const downloadToken = await tx.downloadToken.create({
+        data: {
+          token: crypto.randomUUID(), // Generate UUID token
+          productId: product.id,
+          paymentTransactionId: paymentTransaction.id, // Link to payment
+          expiresAt: expiresAt,
+          downloadCount: 0,
+          maxDownloads: null // NULL = unlimited for MVP
+        }
+      });
+
+      console.log('🎫 Download token created:', downloadToken.token);
+
+      return { paymentTransaction, downloadToken };
     });
 
-    console.log('✅ Download token created successfully:', {
-      token: downloadToken.token,
-      expiresAt: downloadToken.expiresAt,
-      productTitle: product.title
-    });
+    console.log(
+      '✅ Payment transaction and download token created successfully:',
+      {
+        transactionHash,
+        paymentId: result.paymentTransaction.id,
+        token: result.downloadToken.token,
+        expiresAt: result.downloadToken.expiresAt,
+        productTitle: product.title
+      }
+    );
 
     return NextResponse.json({
-      token: downloadToken.token,
-      expiresAt: downloadToken.expiresAt,
-      productId: product.id
+      token: result.downloadToken.token,
+      expiresAt: result.downloadToken.expiresAt,
+      productId: product.id,
+      paymentTransactionId: result.paymentTransaction.id
     });
   } catch (error) {
-    console.error('❌ Error creating download token:', error);
+    console.error(
+      '❌ Error creating payment transaction and download token:',
+      error
+    );
     return NextResponse.json(
       { error: 'Failed to create download token' },
       { status: 500 }

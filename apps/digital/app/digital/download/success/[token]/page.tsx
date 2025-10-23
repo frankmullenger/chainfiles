@@ -22,7 +22,7 @@ interface DownloadSuccessPageProps {
 export default async function DownloadSuccessPage({ params }: DownloadSuccessPageProps) {
   const { token } = await params;
 
-  // Validate token and get product info
+  // Validate token and get product info with payment transaction details
   const downloadToken = await prisma.downloadToken.findUnique({
     where: { token },
     include: {
@@ -33,7 +33,18 @@ export default async function DownloadSuccessPage({ params }: DownloadSuccessPag
           description: true,
           filename: true,
           fileSize: true,
-          price: true
+          price: true,
+          sellerWallet: true
+        }
+      },
+      paymentTransaction: {
+        select: {
+          transactionHash: true,
+          network: true,
+          payerAddress: true,
+          amountPaid: true,
+          currency: true,
+          createdAt: true
         }
       }
     }
@@ -55,6 +66,15 @@ export default async function DownloadSuccessPage({ params }: DownloadSuccessPag
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
+  const getBlockExplorerUrl = (transactionHash: string, network: string): string | null => {
+    if (network === 'base-sepolia') {
+      return `https://sepolia.basescan.org/tx/${transactionHash}`;
+    } else if (network === 'base') {
+      return `https://basescan.org/tx/${transactionHash}`;
+    }
+    return null; // Unknown network
   };
 
   return (
@@ -137,6 +157,72 @@ export default async function DownloadSuccessPage({ params }: DownloadSuccessPag
               </ul>
             </AlertDescription>
           </Alert>
+        )}
+
+        {/* Transaction Details */}
+        {downloadToken.paymentTransaction && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CheckCircleIcon className="size-5 text-green-600" />
+                Payment Transaction
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <label className="text-sm font-medium text-muted-foreground">Transaction Hash</label>
+                <p className="font-mono text-xs bg-muted p-2 rounded mt-1 break-all">
+                  {downloadToken.paymentTransaction.transactionHash}
+                </p>
+                {getBlockExplorerUrl(downloadToken.paymentTransaction.transactionHash, downloadToken.paymentTransaction.network) && (
+                  <Link
+                    href={getBlockExplorerUrl(downloadToken.paymentTransaction.transactionHash, downloadToken.paymentTransaction.network)!}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-muted-foreground transition-colors hover:text-foreground hover:underline mt-1 inline-block"
+                  >
+                    View Transaction →
+                  </Link>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Network</label>
+                  <p className="font-medium capitalize">
+                    {downloadToken.paymentTransaction.network.replace('-', ' ')}
+                  </p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Amount Paid</label>
+                  <p className="font-medium text-green-600">
+                    ${(downloadToken.paymentTransaction.amountPaid / 100).toFixed(2)} {downloadToken.paymentTransaction.currency}
+                  </p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Payment Date</label>
+                  <p className="font-medium">
+                    {new Date(downloadToken.paymentTransaction.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Paid From</label>
+                  <p className="font-mono text-xs bg-muted p-2 rounded mt-1 break-all">
+                    {downloadToken.paymentTransaction.payerAddress}
+                  </p>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-muted-foreground">Paid To</label>
+                  <p className="font-mono text-xs bg-muted p-2 rounded mt-1 break-all">
+                    {downloadToken.product.sellerWallet}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         )}
 
         {/* Product Details */}
