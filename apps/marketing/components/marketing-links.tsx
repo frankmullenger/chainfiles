@@ -100,6 +100,11 @@ export const MENU_LINKS = [
     href: routes.digital.Upload,
     external: false
   },
+  {
+    title: 'How It Works',
+    href: routes.marketing.Docs,
+    external: false
+  },
   // {
   //   title: 'Pricing',
   //   href: routes.marketing.Pricing,
@@ -201,7 +206,7 @@ export const DOCS_LINKS = [
     icon: <CuboidIcon className="size-4 shrink-0 text-muted-foreground" />,
     items: [
       {
-        title: 'Introduction',
+        title: 'Sellers',
         href: '/docs',
         items: []
       },
@@ -212,15 +217,15 @@ export const DOCS_LINKS = [
       }
     ]
   },
-  {
-    title: 'Guides',
-    icon: <BookIcon className="size-4 shrink-0 text-muted-foreground" />,
-    items: [
-      {
-        title: 'Using MDX',
-        href: '/docs/using-mdx',
-        items: []
-      }
-    ]
-  }
+  // {
+  //   title: 'Guides',
+  //   icon: <BookIcon className="size-4 shrink-0 text-muted-foreground" />,
+  //   items: [
+  //     {
+  //       title: 'Using MDX',
+  //       href: '/docs/using-mdx',
+  //       items: []
+  //     }
+  //   ]
+  // }
 ];

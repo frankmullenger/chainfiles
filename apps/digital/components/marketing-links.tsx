@@ -100,6 +100,11 @@ export const MENU_LINKS = [
     href: routes.digital.Upload,
     external: false
   },
+  {
+    title: 'How It Works',
+    href: routes.marketing.Docs,
+    external: false
+  },
   // {
   //   title: 'Pricing',
   //   href: routes.marketing.Pricing,
