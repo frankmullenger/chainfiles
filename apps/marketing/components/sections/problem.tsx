@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BarChartIcon, UserPlusIcon, WorkflowIcon } from 'lucide-react';
+import { BarChartIcon, UserPlusIcon, WorkflowIcon, ClockIcon, ScissorsIcon, UndoIcon } from 'lucide-react';
 
 import { BlurFade } from '~/components/fragments/blur-fade';
 import { GridSection } from '~/components/fragments/grid-section';
@@ -7,19 +7,19 @@ import { TextGenerateWithSelectBoxEffect } from '~/components/fragments/text-gen
 
 const DATA = [
   {
-    icon: <UserPlusIcon className="size-5 shrink-0" />,
+    icon: <ClockIcon className="size-5 shrink-0" />,
     title: 'Friction to start selling',
     description:
       'Creators face long signups, store setup steps, and plugin installs before they can sell a single file. Simple products shouldn’t need a full e-commerce stack.'
   },
   {
-    icon: <BarChartIcon className="size-5 shrink-0" />,
+    icon: <ScissorsIcon className="size-5 shrink-0" />,
     title: 'Fees cut deep into earnings',
     description:
       'High platform and payment fees make small digital sales barely worth the effort, especially for creators selling low-cost items.'
   },
   {
-    icon: <WorkflowIcon className="size-5 shrink-0" />,
+    icon: <UndoIcon className="size-5 shrink-0" />,
     title: 'Slow payouts and chargebacks',
     description:
       'Weekly or delayed payouts make cash flow slow, and chargebacks on digital goods are common and hard to fight.'
