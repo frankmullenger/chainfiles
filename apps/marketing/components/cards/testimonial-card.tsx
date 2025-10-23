@@ -33,10 +33,10 @@ export function TestimonialCard({
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
               <h3 className="font-semibold text-sm">@tiktokeditor</h3>
-              {/* <Badge variant="secondary" className="text-xs px-2 py-0">
-                <StarIcon className="w-3 h-3 mr-1 fill-current" />
-                Verified Creator
-              </Badge> */}
+              <Badge variant="secondary" className="text-xs px-2 py-0">
+                {/* <StarIcon className="w-3 h-3 mr-1 fill-current" /> */}
+                Demo content
+              </Badge>
             </div>
             <p className="text-xs text-muted-foreground">Content Creator</p>
           </div>

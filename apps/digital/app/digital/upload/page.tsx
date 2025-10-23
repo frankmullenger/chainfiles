@@ -44,13 +44,6 @@ export default function UploadPage(): React.JSX.Element {
   const methods = useZodForm({
     schema: createProductFormSchema,
     mode: 'onSubmit',
-    defaultValues: {
-      title: 'Premium Design Template Pack',
-      description: 'A collection of 10 high-quality Figma templates for modern web design. Includes landing pages, dashboards, and mobile app designs.',
-      // price: 1.00,
-      sellerWallet: '0x900a07B823233989540822cA86519027CCAD721d',
-      acceptTerms: false
-    }
   });
 
   // Update form value when file is selected
@@ -161,7 +154,7 @@ export default function UploadPage(): React.JSX.Element {
                     <FormLabel>Product Title</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Premium Design Template Pack"
+                        placeholder="Social Media Growth Guide (PDF)"
                         {...field}
                       />
                     </FormControl>
@@ -179,7 +172,7 @@ export default function UploadPage(): React.JSX.Element {
                     <FormLabel>Description (Optional)</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="A collection of high-quality templates..."
+                        placeholder="Step-by-step guide to growing your social media following..."
                         rows={4}
                         {...field}
                       />
@@ -262,7 +255,7 @@ export default function UploadPage(): React.JSX.Element {
                     <FormLabel>Your Wallet Address</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="0x900a07B823233989540822cA86519027CCAD721d"
+                        placeholder="0x1234...abcd"
                         className="font-mono text-sm"
                         {...field}
                       />
