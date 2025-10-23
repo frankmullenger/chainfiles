@@ -1,2 +1,2 @@
-export const APP_NAME = 'Acme';
-export const APP_DESCRIPTION = 'A fantastic SaaS to make your life easier.';
+export const APP_NAME = 'chainfiles';
+export const APP_DESCRIPTION = 'Sell digital files with crypto payments';
