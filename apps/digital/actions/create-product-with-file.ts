@@ -11,19 +11,8 @@ import { FileStorageFactory } from '../lib/file-storage';
 import { generateSlug } from '../lib/generate-slug';
 
 // File validation constants
-const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
-const ALLOWED_EXTENSIONS = [
-  '.jpg',
-  '.jpeg',
-  '.png',
-  '.gif',
-  '.webp',
-  '.pdf',
-  '.txt',
-  '.doc',
-  '.docx',
-  '.zip'
-];
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const ALLOWED_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.pdf', '.txt'];
 
 // FormData schema (for server action)
 const createProductFormDataSchema = z.object({
@@ -59,7 +48,7 @@ export async function createProductWithFile(formData: FormData) {
     }
 
     if (file.size > MAX_FILE_SIZE) {
-      throw new ValidationError('File size must be less than 50MB.');
+      throw new ValidationError('File size must be less than 10MB.');
     }
 
     const fileName = file.name.toLowerCase();
@@ -68,7 +57,7 @@ export async function createProductWithFile(formData: FormData) {
     );
     if (!isValidExtension) {
       throw new ValidationError(
-        'File type not supported. Please upload PDF, image, TXT, DOC, DOCX, or ZIP files.'
+        'File type not supported. Please upload PDF, images (JPG, PNG, WebP), or TXT files.'
       );
     }
 

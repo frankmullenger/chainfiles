@@ -3,7 +3,7 @@
 > Sell digital files globally in seconds, powered by Base and x402.
 
 **Mission:**  
-Enable any creator to sell digital content instantly using blockchain payments — no setup, no middlemen, no waiting.
+Enable any creator to sell digital content instantly using blockchain payments — no setup, no gatekeepers, no waiting.
 
 ---
 
@@ -11,7 +11,7 @@ Enable any creator to sell digital content instantly using blockchain payments �
 
 Over **1 billion creators** face barriers to selling digital products:
 
-- Major platforms (e.g. TikTok Shop) block digital files entirely  
+- Major platforms (e.g. TikTok Shop) do not support digital product sales  
 - Traditional creator marketplaces take **10–30 %** in fees  
 - Stripe / PayPal charge **3 %+** and delay payouts for days  
 
@@ -93,6 +93,10 @@ Creator wallet receives USDC instantly
 | Identity | Wallet-based login and address display | Integrate Base Names and creator profiles |
 | File Storage | Files served via Node API using 24-hr expiring download tokens (file path never exposed) | Move to cloud storage with signed URLs, then explore decentralised file storage options |
 | Pricing & Plans | No platform fee currently | Introduce percentage-based fee (e.g. 5 %) and optional Pro tier with dashboards, analytics, and lower fees |
+| File Types | PDF, images (JPG, PNG, WebP), TXT files up to 10MB | Support more file types (audio, video, docs) and larger uploads |
+| Pricing Options | Single fixed price per product | Add discount codes and promotional pricing (Pro tier feature) |
+| Content Moderation | Manual review possible | Better file reporting and takedown systems |
+| Terms of Use | Basic guidelines | ToS, Privacy, Content and Acceptable Use policy pages |
 
 ---
 
