@@ -12,7 +12,7 @@ Enable any creator to sell digital content instantly using blockchain payments �
 Over **1 billion creators** face barriers to selling digital products:
 
 - Major platforms (e.g. TikTok Shop) block digital files entirely  
-- Traditional marketplaces take **30–50 %** in fees  
+- Traditional creator marketplaces take **10–30 %** in fees  
 - Stripe / PayPal charge **3 %+** and delay payouts for days  
 
 **Result:** a massive gap for simple, direct digital sales.
@@ -42,18 +42,30 @@ Over **1 billion creators** face barriers to selling digital products:
 - ☁️ Secure, signed download URLs (auto-expire)
 
 ```
-Buyer (Coinbase / Base Wallet)  
- │ pays USDC via x402  
- ▼  
-ChainFiles App ── verifies tx ──► unlocks file  
- │  
- ▼  
-Creator wallet receives USDC instantly  
+Buyer (Coinbase / Base Wallet)
+   │  pays USDC via x402
+   ▼
+ChainFiles App ── verifies tx ──► unlocks file
+   │
+   ▼
+Creator wallet receives USDC instantly
 
-[Planned next step]  
-Splitter Contract  
- ├──► Platform fee (X % + $0.50 min)  
- └──► Creator payout  
+
+[Planned next step → Gasless UX]
+   • Add Paymaster (ERC-4337) to sponsor gas for new users
+   • Buyer signs → Paymaster covers gas → seamless checkout
+
+
+[Planned next step → Payout Automation]
+   • x402 recipient = Splitter Contract (USDC)
+       ├──► Platform fee (X % with flat-fee minimum)
+       └──► Creator payout
+   • Backend auto-calls `distribute()` right after payment
+
+
+[Planned next step → Storage Evolution]
+   • Move files to cloud storage with signed URLs
+   • Explore encrypted IPFS / Arweave for decentralized unlocks
 ```
 
 ---
@@ -78,8 +90,9 @@ Splitter Contract
 |------|----------------|-----------|
 | Payments | x402 (USDC on Base Sepolia) | Deploy onchain splitter (auto fee + payout) |
 | Wallet UX | Coinbase / Base Wallet connect | Add Paymaster for gasless UX |
-| Identity | Basenames ready | Full Base Accounts integration |
-| Pricing | Flat per-file price | Tiered creator plans (Free / Pro) |
+| Identity | Wallet-based login and address display | Integrate Base Names and creator profiles |
+| File Storage | Files served via Node API using 24-hr expiring download tokens (file path never exposed) | Move to cloud storage with signed URLs, then explore decentralised file storage options |
+| Pricing & Plans | No platform fee currently | Introduce percentage-based fee (e.g. 5 %) and optional Pro tier with dashboards, analytics, and lower fees |
 
 ---
 
